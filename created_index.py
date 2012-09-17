@@ -1,7 +1,7 @@
 import os
 INDEX = """<!doctype html>
 <html>
-<title>idex</title>
+<title> </title>
 <style>
 body
 {
