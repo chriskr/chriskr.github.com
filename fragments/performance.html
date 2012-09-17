@@ -1,0 +1,422 @@
+<!doctype html>
+<title>animation performance</title>
+<style>
+
+html, body
+{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font: menu;
+  font-size: 12px;
+  background-color: #000;
+  color: #fff;
+}
+
+#legend
+{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+}
+
+#legend div
+{
+  margin: 7px 14px;
+}
+
+h1
+{
+  text-align: left;
+  font: inherit;
+  font-size: 18px;
+  margin: 7px 14px;
+}
+
+input[type=button]
+{
+  position: relative;
+  z-index: 1;
+  background: none;
+  border: none;
+  font: inherit;
+  color: #fff;
+  float: right;
+}
+
+canvas
+{
+  position:absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ball
+{
+  position:absolute;
+  font-size: 0;
+  width: 0;
+  height = 0;
+  left: -100px;
+}
+
+</style>
+
+<script>
+
+window.timer = new function()
+{
+  var _time_delta = 1000 / 60;
+  var _store = [];
+  var _timeout = 0;
+  var _stamps = [];
+  var _timeFrame = null;
+  var _before_frame = null;
+
+  var _getfps = function()
+  {
+    while (_stamps.length > 100) _stamps.shift();
+    _stamps.push(Date.now());
+    var last = _stamps.length - 1;
+    _timeFrame(1000 / (_stamps[last] - _stamps[0]) * last >> 0);
+  };
+
+  var _on_frame = function()
+  {
+    var is_running = false;
+    if (_before_frame)
+      _before_frame()
+
+    var now = Date.now();
+    for (var i = 0, length = _store.length; i < length; i++)
+      if (is_running = Boolean(_store[i]))
+        _store[i]();
+
+    if (is_running)
+    {
+      var delta = _time_delta - (Date.now() - now) >> 0;
+      _timeout = setTimeout(_on_frame, delta > 0 ? delta : 0);
+    }
+
+    if (_timeFrame)
+      _getfps();
+  };
+
+  this.set = function(fn)
+  {
+    for (var i = 0, length = _store.length; i < length && _store[i] != fn; i++);
+    if (i == length)
+    {
+      for (i = 0; _store[i]; i++);
+      _store[i] = fn;
+      this.start();
+    }
+    return i;
+  };
+
+  this.clear = function(index)
+  {
+    _store[index] = null;
+    return -1;
+  };
+
+  this.set_on_frame = function(callback)
+  {
+    _timeFrame = callback;
+  };
+
+  this.clearOnFrame = function()
+  {
+    _timeFrame = null;
+  };
+
+  this.set_before_frame = function(callback)
+  {
+    _before_frame = callback;
+  };
+
+  this.clear_before_frame = function()
+  {
+    _before_frame = null;
+  };
+
+  this.pause = function()
+  {
+    window.clearTimeout(_timeout);
+    _timeout = 0;
+  };
+
+  this.start = function()
+  {
+    if( !_timeout )
+      _timeout = setTimeout(_on_frame, 0);
+  };
+};
+
+var Spline = function(path) { this._init(path); };
+
+Spline.prototype = new function()
+{
+  this._init = function(path)
+  {
+    this.path = path;
+    this._cache = [];
+  };
+
+  this.at = function(x)
+  {
+    if (!this.path.length) return 0;
+
+    if (x > 100) x = 100;
+
+    for (var i = 0, length = this.path.length - 1; i < length; i++)
+      this._cache[i] = this.path[i] +  x / 100 * (this.path[i+1] - this.path[i]);
+
+    for (length--; length; length--)
+      for (i = 0; i < length; i++)
+        this._cache[i] = this._cache[i] +  x / 100 * (this._cache[i + 1] - this._cache[i]);
+
+    return this._cache[0];
+  };
+};
+
+var Animation = function() { this._init(); };
+
+Animation.prototype = new function()
+{
+  this._init = function()
+  {
+    this.current = 0
+    this.interval = -1;
+    this.time_delta = 1;
+    this.on_frame = this._on_frame.bind(this);
+  };
+
+  this.start = function(){};
+
+  this.strategy = function(){};
+
+  this.onfinish = function(){};
+
+  this._on_frame = function()
+  {
+    this.current += this.time_delta;
+    this.strategy();
+    if (this.current > 100)
+    {
+      this.interval = timer.clear(this.interval);
+      this.onfinish();
+    }
+  };
+
+  this.run = function()
+  {
+    if (this.interval == -1)
+    {
+      this.current = 0;
+      this.interval = timer.set(this.on_frame);
+    }
+  };
+
+  this.restart = function()
+  {
+    if (this.interval == -1) this.interval = timer.set(this.on_frame);
+  };
+
+  this.pause = function()
+  {
+    this.interval = timer.clear(this.interval);
+  };
+
+  this.clear = function()
+  {
+    timer.clear(interval);
+  };
+
+};
+
+CanvasRenderingContext2D.prototype.draw_point = function(anim)
+{
+  this.fillStyle = anim.color;
+  this.beginPath();
+  console.log(anim.x, anim.y)
+  this.arc(anim.x, anim.y, anim.radius, 0, Math.PI*2, true);
+  this.fill();
+};
+
+var Ball = function(canvas_width, canvas_height, ctx)
+{
+  this._init(canvas_width, canvas_height, ctx);
+};
+
+var BallPrototype = function()
+{
+  var MIN_RADIUS = 2;
+  var MAX_RADIUS = 25;
+  var rand = Math.random;
+
+  this._init = function(canvas_width, canvas_height, ctx)
+  {
+    MAX_RADIUS = 5 + (canvas_width / 1920) * 20 >> 0
+    Animation.prototype._init.call(this);
+    this._ctx = ctx;
+    this.spline_x = new Spline([0, canvas_width * rand()]);
+    this.spline_y = new Spline([-MAX_RADIUS, 0, -MAX_RADIUS]);
+    this.amplitude = canvas_height;
+    this.canvas_width = canvas_width;
+    this.color = "hsl(" + (rand() * 360 >> 0) + ", 100%, 50%)";
+    this.radius = MIN_RADIUS + (1/Math.pow(5 - rand() * 4, 2)) * (MAX_RADIUS - MIN_RADIUS) >> 0;
+  }
+
+    this.strategy = function()
+    {
+      this.x = this.spline_x.at(this.current) >> 0;
+      this.y = - (this.spline_y.at(this.current) >> 0);
+      this._ctx.draw_point(this);
+    };
+
+    this.start = function()
+    {
+      var height = this.amplitude * (2 / (Math.pow(5 - rand() * 4, 3)));
+      this.time_delta = .2 * Math.sqrt(this.amplitude / height);
+      var x = this.spline_x.path[0] = this.spline_x.path[1];
+      var delta = (height / (this.amplitude * 2)) * Math.max(x, this.canvas_width - x) * rand() >> 0
+      delta *= rand() > .5 ? 1 : -1;
+      if ((x + delta) <= 0 || (x + delta) >= this.canvas_width)
+        delta *= -1;
+      this.spline_x.path[1] = x + delta;
+      this.spline_y.path[1] = -height;
+      this.run();
+    };
+
+    this.onfinish = this.start;
+
+};
+
+BallPrototype.prototype = new Animation();
+Ball.prototype = new BallPrototype();
+
+
+var EBall = function(canvas_width, canvas_height)
+{
+  this._init(canvas_width, canvas_height);
+};
+
+var EBallPrototype = function()
+{
+  this._init = function(canvas_width, canvas_height)
+  {
+    Ball.prototype._init.call(this, canvas_width, canvas_height, null);
+    var ball = document.body.insertBefore(document.createElement("div"), document.body.firstChild);
+    ball.className = "ball";
+    ball.style.padding = this.radius + "px";
+    ball.style.borderRadius = this.radius + "px";
+    ball.style.backgroundColor = this.color;
+    this.style = ball.style;
+  }
+
+  this.strategy = function()
+  {
+    this.style.left = (this.spline_x.at(this.current) - this.radius >> 0) + "px";
+    this.style.top = (-this.spline_y.at(this.current) - this.radius >> 0) + "px";
+  };
+
+};
+
+EBallPrototype.prototype = new Ball();
+EBall.prototype = new EBallPrototype();
+
+window.tester = new function()
+{
+  var _counter = 0;
+  var _canvas_width = 0;
+  var _canvas_height = 0;
+  var _ctx = null;
+  var _animations_count = 0;
+  var _add_animations = null;
+
+  var _add_animations_canvas = function(count)
+  {
+    _animations_count += count;
+    for (var i = 0; i < count; i++)
+      new Ball(_canvas_width, _canvas_height, _ctx).start();
+  };
+
+  var _add_animations_element = function(count)
+  {
+    _animations_count += count;
+    for (var i = 0; i < count; i++)
+      new EBall(_canvas_width, _canvas_height).start();
+  };
+
+  var _on_frame = function(framerate)
+  {
+    if (++_counter > 100)
+    {
+      document.getElementById('framerate').textContent = framerate;
+      _counter = 0;
+      if (framerate > 50)
+      {
+        _add_animations(25);
+        document.getElementById('object-count').textContent = _animations_count
+      }
+    }
+  };
+
+  var _before_frame = function()
+  {
+    _ctx.clearRect(0, 0, _canvas_width, _canvas_height);
+  };
+
+  this.start = function()
+  {
+    if (document.getElementById("type-canvas").checked)
+    {
+      document.querySelector("h1").textContent += " canvas";
+      var canvas = document.body.insertBefore(document.createElement("canvas"), document.body.firstChild);
+      canvas.width = _canvas_width = canvas.offsetWidth;
+      canvas.height = _canvas_height = canvas.offsetHeight;
+      _ctx = canvas.getContext("2d");
+      timer.set_on_frame(_on_frame);
+      timer.set_before_frame (_before_frame);
+      _add_animations = _add_animations_canvas;
+      _add_animations(25);
+    }
+    else
+    {
+      document.querySelector("h1").textContent += " elements";
+      _canvas_width = window.innerWidth;
+      _canvas_height = window.innerHeight;
+      _add_animations = _add_animations_element;
+      _add_animations(25);
+      window.timer.set_on_frame(_on_frame);
+    }
+    document.getElementById("configuration").style.display = "none";
+  };
+
+};
+
+</script>
+
+
+<div id=legend>
+
+<h1>animation performance</h1>
+<div>
+<input type=button onclick=window.timer.start() value=continue>
+<input type=button onclick=window.timer.pause() value=pause>
+<input type=button onclick=window.tester.start() value=start>
+target fps: 50 - current fps: <span id='framerate'></span> - object count: <span id='object-count'></span>
+<span id=configuration>
+<label><input type=radio name=type id=type-canvas checked> canvas</label>
+<label><input type=radio name=type id=type-element> elements</label>
+</span>
+</div>
+</div>
+
