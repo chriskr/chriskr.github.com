@@ -45,7 +45,8 @@ icon
 
 ITEM_DIR = """<li class="directory"><a href="./%s/"><icon></icon>%s</a></li>"""
 ITEM_FILE = """<li class="file"><a href="./%s"><icon></icon>%s</a></li>"""
-BLACKLISt = [".git"]
+DIR_BLACKLISt = [".git"]
+FILE_BLACKLISt = ["index.html"]
 
 def create_index():
     for root, dirs, files in os.walk("."):
@@ -53,10 +54,10 @@ def create_index():
             fp.write(INDEX)
             fp.write("<ul>")
             for dir_n in dirs:
-                if not dir_n in BLACKLISt:
+                if not dir_n in DIR_BLACKLISt:
                     fp.write(ITEM_DIR % (dir_n, dir_n))
             for file_n in files:
-                if file_n.endswith(".htnl"):
+                if not file_n in FILE_BLACKLISt and file_n.endswith(".html"):
                     fp.write(ITEM_FILE % (file_n, file_n))
             fp.write("</ul>")
 
