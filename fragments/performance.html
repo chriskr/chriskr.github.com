@@ -89,23 +89,30 @@ window.timer = new function()
 
   var _on_frame = function()
   {
+    var now = Date.now();
     var is_running = false;
     if (_before_frame)
       _before_frame();
 
-    var now = Date.now();
     for (var i = 0, length = _store.length; i < length; i++)
-      if (is_running = Boolean(_store[i]))
+    {
+      if (_store[i])
+      {
+        if (!is_running)
+          is_running = true;
+
         _store[i]();
+      }
+    }
+
+    if (_timeFrame)
+      _getfps();
 
     if (is_running)
     {
       var delta = _time_delta - (Date.now() - now) >> 0;
       _timeout = setTimeout(_on_frame, delta > 0 ? delta : 0);
     }
-
-    if (_timeFrame)
-      _getfps();
   };
 
   this.set = function(fn)
@@ -273,7 +280,7 @@ var BallPrototype = function()
   this.strategy = function()
   {
     var x = this.spline_x.at(this.current) >> 0;
-    var y = - (this.spline_y.at(this.current) >> 0);
+    var y = -(this.spline_y.at(this.current) >> 0);
     this._ctx.drawImage(this.src_canvas,
                         this.src_x, this.src_y, this.src_width, this.src_height,
                         x - max_radius, y - max_radius, 2 * max_radius, 2 * max_radius);
@@ -361,7 +368,7 @@ var SrcCtx = function()
       }
     }
     return ret;
-  }
+  };
 };
 
 window.tester = new function()
@@ -425,7 +432,6 @@ window.tester = new function()
       timer.set_before_frame (_before_frame);
       _add_animations = _add_animations_canvas;
       _add_animations(DELTA);
-
     }
     else
     {
