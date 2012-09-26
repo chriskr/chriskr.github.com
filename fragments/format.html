@@ -1,0 +1,118 @@
+<!doctype html>
+<title>Number formatting</title>
+<script>
+
+Number.prototype.format = (function()
+{
+  var cache = {};
+  var get_formatter = function(format)
+  {
+    // e.g. "# ##0.00 sFr"
+    var fixes = format.split(/(?:#+[^#0]*)*[#0.,]+/);
+    var pre_fix = fixes[0];
+    var after_fix = fixes[1];
+    format = format.replace(pre_fix, "").replace(after_fix, "");
+    var dec_sep = "";
+    var dec_blocks_length = 1;
+    var leading_null_counts = 0;
+    var to_fixed_arg = 0;
+    var float_sep = "";
+    var seps = format.replace(/[#0]/g, "");
+
+    if (seps.length == 2)
+    {
+      dec_sep = seps[0];
+      float_sep = seps[1];
+    }
+    else if (seps.length == 1)
+    {
+      var index = format.indexOf(seps[0]);
+      if (format[index - 1] == "#")
+        dec_sep = seps[0];
+      else
+        float_sep = seps[0];
+    }
+
+    if (dec_sep)
+    {
+      var dec_block = format.slice(format.indexOf(dec_sep) + 1);
+      if (float_sep)
+        dec_block = dec_block.slice(0, dec_block.indexOf(float_sep));
+
+      dec_blocks_length = dec_block.length;
+    }
+
+    if (float_sep)
+    {
+      var float_sep_split = format.split(float_sep);
+      to_fixed_arg = float_sep_split[1].length;
+      leading_null_counts = float_sep_split[0].replace(/[^0]/g, "").length;
+    }
+    else
+      leading_null_counts = format.replace(/[^0]/g, "").length;
+
+
+    return formatter.bind(null, pre_fix,
+                                dec_sep,
+                                dec_blocks_length,
+                                leading_null_counts,
+                                float_sep,
+                                to_fixed_arg,
+                                after_fix);
+
+  }
+
+  var formatter = function(pre_fix,
+                           dec_sep,
+                           dec_blocks_length,
+                           leading_null_counts,
+                           float_sep,
+                           to_fixed_arg,
+                           after_fix,
+                           number)
+  {
+
+    var parts = number.toFixed(to_fixed_arg).split(".");
+    var float_part = parts[1] || "";
+    var val = parts[0];
+    var dec_part = val;
+
+    if (dec_sep)
+    {
+      while (val.length % dec_blocks_length)
+        val = " " + val;
+
+      var re = new RegExp("(.{" + dec_blocks_length + "})", "g");
+      dec_part = val.split(re).filter(Boolean).join(dec_sep).trim();
+    }
+
+    while (dec_part.length > leading_null_counts && dec_part[0] == "0")
+      dec_part = dec_part.slice(1);
+
+    while (dec_part.length < leading_null_counts)
+      dec_part = "0" + dec_part;
+
+    return pre_fix + dec_part + float_sep + float_part + after_fix;
+  };
+
+  return function(format)
+  {
+    var f = cache[format] || (cache[format] = get_formatter(format));
+    return f(this);
+  };
+
+})();
+
+</script>
+
+<script>
+
+window.onload = function()
+{
+  document.body.innerHTML = "<pre>" +
+  [
+    .5657,
+    54646464.8786
+  ].map(function(n) { return n.format("# ##0,00 sFr"); }).join("\n");
+}
+</script>
