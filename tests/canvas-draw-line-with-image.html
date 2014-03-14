@@ -1,0 +1,105 @@
+<!doctype html>
+<title>test</title>
+<style>
+canvas
+{
+  display: block;
+  width: 2000px;
+  height: 8000px;
+}
+</style>
+<script>
+
+CanvasRenderingContext2D.prototype.drawLine = function(startX,
+                                                      startY,
+                                                      endX,
+                                                      endY,
+                                                      width,
+                                                      color)
+{
+  this.save();
+  this.strokeStyle = color || "black";
+  this.beginPath();
+  this.moveTo(startX, startY);
+  this.lineTo(endX, endY);
+  this.lineWidth = width || 1;
+  this.stroke();
+  this.closePath();
+  this.restore();
+};
+
+CanvasRenderingContext2D.prototype.drawLineWithRect = function(startX,
+                                                      startY,
+                                                      endX,
+                                                      endY,
+                                                      width,
+                                                      color)
+{
+  this.save();
+  this.fillStyle = color || "black";
+  this.fillRect(startX, startY, endX - startX, width);
+  this.restore();
+};
+
+CanvasRenderingContext2D.prototype.drawLineWithImage = function(startX,
+                                                      startY,
+                                                      endX,
+                                                      endY,
+                                                      width,
+                                                      color)
+{
+  this.save();
+  if (!CanvasRenderingContext2D.canvases)
+    CanvasRenderingContext2D.canvases = Object.create(null);
+
+  color || (color = "black");
+  if (!CanvasRenderingContext2D.canvases[color]) {
+    var c = document.createElement("canvas");
+    CanvasRenderingContext2D.canvases[color] = c;
+    c.height = c.width = 1;
+    var ctx = c.getContext("2d");
+    ctx.fiffStyle = color;
+    ctx.fillRect(0, 0, 1, 1);
+  }
+
+  var sourceImage = CanvasRenderingContext2D.canvases[color];
+  this.drawImage(sourceImage, startX, startY, endX - startX, width);
+  this.restore();
+};
+
+
+
+window.onload = function() {
+
+  var drawSet = function(ctx, startY)
+  {
+    var shiftX = 70;
+    for (var i = 0; i < 100; i++) {
+      for (var j = 0; j < 20; j++) {
+        var startX = 5 + j * shiftX;
+        var _startY = startY + 60 + 4 * i + 0.01 * i;
+        var endX = startX + shiftX - 10;
+        var endY = _startY;
+        var width = 1 - j * 0.05;
+        if (!i) {
+          ctx.fillText(width.toFixed(2), startX, _startY - 20)
+        }
+        ctx.drawLineWithImage(startX, _startY, endX, endY, 1 - j * 0.05);
+      }
+    }
+  };
+
+  var c = document.querySelector("canvas");
+  c.width = 2000;
+  c.height = 8000;
+  var ctx = c.getContext("2d");
+  var scale = 1;
+  for (var i = 0; i < 10; i++) {
+    drawSet(ctx, i * (480 / scale));
+    ctx.scale(0.95, 0.95);
+    scale *= 0.95;
+    ctx.fillText("scale: " + scale.toFixed(3), 5, i * (480 / scale) + 15)
+  }
+}
+</script>
+<canvas></canvas>
