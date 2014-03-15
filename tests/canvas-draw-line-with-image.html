@@ -4,8 +4,8 @@
 canvas
 {
   display: block;
-  width: 2000px;
-  height: 8000px;
+  width: 1000px;
+  height: 5000px;
 }
 </style>
 <script>
@@ -68,14 +68,14 @@ CanvasRenderingContext2D.prototype.drawLineWithImage = function(startX,
 };
 
 var START_X_0 = 100;
+var SHIFT_X = 40;
 var drawSet = function(ctx, method, startY)
 {
-  var shiftX = 70;
   for (var i = 0; i < 100; i++) {
     for (var j = 0; j < 20; j++) {
-      var startX = START_X_0 + 5 + j * shiftX;
+      var startX = START_X_0 + 5 + j * SHIFT_X;
       var _startY = startY + 60 + 4 * i + 0.01 * i;
-      var endX = startX + shiftX - 10;
+      var endX = startX + SHIFT_X - 10;
       var endY = _startY;
       var width = 1 - j * 0.05;
       if (!i) {
@@ -97,8 +97,8 @@ var drawLines = function(method) {
     c.parentNode.removeChild(c);
   }
   c = document.body.appendChild(document.createElement("canvas"));
-  c.width = 2000;
-  c.height = 8000;
+  c.width = 1000;
+  c.height = 5000;
   var ctx = c.getContext("2d");
   var scale = 1;
   ctx.fillText("x axis: line width    y axis: y position", 5, 10);
