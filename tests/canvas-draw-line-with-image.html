@@ -4,11 +4,43 @@
 canvas
 {
   display: block;
-  width: 2000px;
-  height: 8000px;
+  width: 1000px;
+  height: 5000px;
 }
 </style>
 <script>
+
+CanvasRenderingContext2D.prototype.drawLine = function(startX,
+                                                      startY,
+                                                      endX,
+                                                      endY,
+                                                      width,
+                                                      color)
+{
+  this.save();
+  this.strokeStyle = color || "black";
+  this.beginPath();
+  this.moveTo(startX, startY);
+  this.lineTo(endX, endY);
+  this.lineWidth = width || 1;
+  this.stroke();
+  this.closePath();
+  this.restore();
+};
+
+CanvasRenderingContext2D.prototype.drawLineWithRect = function(startX,
+                                                      startY,
+                                                      endX,
+                                                      endY,
+                                                      width,
+                                                      color)
+{
+  this.save();
+  this.fillStyle = color || "black";
+  this.fillRect(startX, startY, endX - startX, width);
+  this.restore();
+};
+
 CanvasRenderingContext2D.prototype.drawLineWithImage = function(startX,
                                                                 startY,
                                                                 endX,
@@ -35,47 +67,64 @@ CanvasRenderingContext2D.prototype.drawLineWithImage = function(startX,
   this.restore();
 };
 
-
-
-window.onload = function() {
-  var START_X_0 = 100;
-
-  var drawSet = function(ctx, startY)
-  {
-    var shiftX = 70;
-    for (var i = 0; i < 100; i++) {
-      for (var j = 0; j < 20; j++) {
-        var startX = START_X_0 + 5 + j * shiftX;
-        var _startY = startY + 60 + 4 * i + 0.01 * i;
-        var endX = startX + shiftX - 10;
-        var endY = _startY;
-        var width = 1 - j * 0.05;
-        if (!i) {
-          ctx.fillText(width.toFixed(2), startX, _startY - 20)
-        }
-
-        if (!j && !(i % 10)) {
-          ctx.fillText((0.01 * i).toFixed(2).slice(1), 55, _startY + 5);
-        }
-
-        ctx.drawLineWithImage(startX, _startY, endX, endY, 1 - j * 0.05);
+var START_X_0 = 100;
+var SHIFT_X = 40;
+var drawSet = function(ctx, method, startY)
+{
+  for (var i = 0; i < 100; i++) {
+    for (var j = 0; j < 20; j++) {
+      var startX = START_X_0 + 5 + j * SHIFT_X;
+      var _startY = startY + 60 + 4 * i + 0.01 * i;
+      var endX = startX + SHIFT_X - 10;
+      var endY = _startY;
+      var width = 1 - j * 0.05;
+      if (!i) {
+        ctx.fillText(width.toFixed(2), startX, _startY - 20)
       }
-    }
-  };
 
+      if (!j && !(i % 10)) {
+        ctx.fillText((0.01 * i).toFixed(2).slice(1), 55, _startY + 5);
+      }
+
+      ctx[method](startX, _startY, endX, endY, 1 - j * 0.05);
+    }
+  }
+};
+
+var drawLines = function(method) {
   var c = document.querySelector("canvas");
-  c.width = 2000;
-  c.height = 8000;
+  if (c) {
+    c.parentNode.removeChild(c);
+  }
+  c = document.body.appendChild(document.createElement("canvas"));
+  c.width = 1000;
+  c.height = 5000;
   var ctx = c.getContext("2d");
   var scale = 1;
   ctx.fillText("x axis: line width    y axis: y position", 5, 10);
   for (var i = 0; i < 10; i++) {
-    drawSet(ctx, i * (480 / scale));
+    drawSet(ctx, method, i * (480 / scale));
     ctx.scale(0.95, 0.95);
     var currentScale = scale;
     scale *= 0.95;
-    ctx.fillText("scale: " + currentScale.toFixed(3), 5, i * (480 / scale) + 25)
+    ctx.fillText("scale: " + currentScale.toFixed(3), 5, i * (480 / scale) + 25);
   }
-}
+};
+
+window.onload = function() {
+  drawLines("drawLineWithImage");
+};
+
 </script>
-<canvas></canvas>
+<div>
+  <button onclick="drawLines('drawLine')">
+    Draw lines with lineTo
+  </button>
+  <button onclick="drawLines('drawLineWithRect')">
+    Draw lines with fillRect
+  </button>
+  <button onclick="drawLines('drawLineWithImage')">
+    Draw lines with drawImage
+  </button>
+</div>
+
