@@ -107,6 +107,7 @@ var drawLines = function(method) {
     ctx.scale(0.95, 0.95);
     var currentScale = scale;
     scale *= 0.95;
+    console.log(ctx.currentTransform)
     ctx.fillText("scale: " + currentScale.toFixed(3), 5, i * (480 / scale) + 25);
   }
 };
