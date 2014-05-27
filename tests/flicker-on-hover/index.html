@@ -1,32 +1,43 @@
 <!doctype html>
-<title>test</title>
-<meta charset="utf-8">
+<html>
+<title> </title>
 <style>
-
 body
 {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: #F5F5F5;
+    font-family: "Lucida Sans Unicode", sans-serif;
+    font-size: .8em;
 }
-
-.view
+ul
 {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
-
-.iframe-view
+li
 {
-  display: block;
-  border: none;
-  width: 100%;
-  height: 100%;
+    padding-left: 0;
 }
-
+a
+{
+    text-decoration: none;
+}
+icon
+{
+    display: inline-block;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    width: -o-skin;
+    height: -o-skin;
+    margin-right: 3px;
+}
+.directory icon
+{
+    background-image: -o-skin('Folder');
+}
+.file icon
+{
+    background-image: -o-skin('Window Document Icon');
+}
 </style>
-<div class="view"><iframe class="iframe-view" src="stash.html"></iframe></div>
+<ul>
+<ul><li class="file"><a href="./stash.html"><icon></icon>stash.html</a></li></ul>
