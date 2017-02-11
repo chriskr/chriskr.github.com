@@ -1,172 +1,114 @@
 html {
-  margin: 0;
-  padding: 0;
-  font: menu;
+  background-color: #f8f2e6;
+  font-family: 'Libre Franklin', sans-serif;
   font-size: 16px;
-  
-  background-image: linear-gradient(hsla(0, 0%, 0%, 0.02), 
-                                    hsla(0, 0%, 0%, 0.02) 1px, 
-                                    hsla(0, 0%, 0%, 0) 0);
-  background-repeat: repeat-y;
-  height: 100%;
-  background-size: 0 0;
-  background-size: 100% 7px;
-  /*
-  xbackground-color: hsl(0, 0%, 97%);
-  background-size: 100vh;
-  background-image: url(logo.svg);
-  background-repeat: no-repeat;
-  
-  background-position: 50% 50%;
-  background-image: url(bg_lines.svg);
-  */
+  margin: 0;
   overflow-x: hidden;
+  padding: 0;
 }
 
 body {
-  min-height: 100%;
-  margin: 0 auto;
-  padding: 0 0 0 120px;
-  box-sizing: border-box;
-  max-width: 700px;
-  xbackground-image: url(bg.svg);
-  xxbackground-color: white;
-  xxborder: 1px solid hsla(0, 0%, 0%, 0.05);
-  xxborder-width: 0 1px;
-
-  xxbox-shadow: 0 1px 7px hsla(0, 0%, 0%, .1);
-  xbackground-repeat: no-repeat;
-  xbackground-size: 900px;
-  xbackground-position: 100% 100px;
-  background-size: 200px;
   background-image: url(logo.svg);
+  background-position: calc(100% - 108px) 112px;
+  background-position: calc(100% - 86px) 112px;
   background-repeat: no-repeat;
-  background-position: 100% 20px;
-    padding-bottom: 70px;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  margin: 0;
-  font-weight: normal;
+  background-size: 44px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 740px;
+  padding: 0 20px 44px 140px;
 }
 
 h1 {
-  padding-top: 66px;
-  xpadding-bottom: 20px;
-  xheight: 0px;
+  font-size: 32px;
+  font-weight: 100;
   line-height: 45px;
-  margin: 0 0 0 -120px;
-  font-weight: lighter;
-
-}
-
-h1 + h3 {
-  xmargin: 0 -120px;
-
+  margin: 0 0 25px -120px;
+  padding-top: 24px;
 }
 
 h2 {
-  xbackground-color: hsla(0, 0%, 0%, 0.05);
-  margin: 0 0 20px -120px;
+  font-size: 32px;
+  font-weight: 100;
+  margin: 0 0 5px -120px;
   padding: 7px 0;
-  font-size: 2em;
-  font-weight: lighter;
 }
 
 h3 {
-  line-height: 30px;
+  font-size: 19px;
+  font-weight: 300;
+  margin: 0;
 }
 
 h4 {
-  font-size: 1.2em;
-  font-style: italic;
-  xmargin-left: -120px;
-  font-weight: lighter;
-  text-align: right;
-  margin-top: 28px;
+  display: flex;
+  font-weight: 400;
+  justify-content: space-between;
+  margin: 0;
+  padding: 38px 0 0;
 }
 
 h5 {
-  margin: 0;
-  margin-top: 7px;
-  display: flex;
-  justify-content: space-between;
+  background-color: hsla(0, 0%, 0%, .1);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 18px;
+  margin: 36px 0 0 -120px;
+  padding: 0 0 0 120px;
+}
+
+h6 {
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 26.9px;
+  margin: 27px -30px 0 -117px;
+  text-align: center;
 }
 
 #contact a {
-  padding: 0;
-  xpadding-left: 24px;
-  xbackground-repeat: no-repeat;
-  xbackground-size: 16px;
   font-size: 13px;
-  xline-height: 20px;
-  xbackground-position: 2px 4px; 
-  xflex: 1;
-}
-
-#chris {
-  xbackground-image: url(mail.svg);
 }
 
 section {
-  margin-top: 1em;
+  margin-top: 15px;
 }
 
 #projects {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 #projects h2 {
-  font-size: 5em;
+  font-size: 80px;
+  margin-bottom: 24px;
+  margin-top: 7px;
   padding: 0;
-  margin-top: -15px;
 }
 
 #projects h3 {
-  background-color: hsl(0, 0%, 30%);
-  color: white;
-  padding: 0 10px;
-  font-size: 1em;
-  line-height: 1.5em;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  margin-left: -120px;
+  padding: 0 0 0 120px;
 }
 
 #projects h3 a {
+  background: url(arrow.svg) no-repeat 7px 50%;
   display: block;
   height: 100%;
-  margin-left: -10px;
-  padding-left: 30px;
-  background: url(arrow_white.svg) no-repeat 7px 50% ;
+  margin-left: -52px;
+  padding-left: 52px;
 }
 
 #dragonfly::before {
-  content: '';
   background: url(dragonfly-logo.png) no-repeat 0 0/100%;
+  content: '';
   float: left;
-  width: 42px;
   height: 42px;
   margin-left: -80px;
-  margin-top: -5px;
-
-}
-
-xxsection li:not(:first-child) h3 {
-  xborder-top: 7px solid hsl(0, 0%, 30%);
-
-  background-image: linear-gradient(-45deg, hsl(0, 0%, 85%),
-                                              hsl(0, 0%, 85%) 11px, 
-                                              hsla(0, 0%, 0%, 0) 0),
-                    linear-gradient(-225deg, hsl(0, 0%, 85%),
-                                              hsl(0, 0%, 85%) 11px, 
-                                              hsla(0, 0%, 0%, 0) 0);
-  background-repeat: repeat-x;
-  background-size: 61px 7px;
-  background-position: 15px 0;
-
-  margin: 0 0 0 -120px;
-  padding: 20px 120px 0;
+  margin-top: 48px;
+  width: 42px;
 }
 
 ul {
@@ -185,14 +127,13 @@ a:hover {
 }
 
 .links {
-  font-size: 12px;
-  text-align: right;
+  font-size: 13px;
   padding-bottom: 10px;
+  text-align: right;
 }
 
 .links ul {
   display: flex;
-  xtext-align: left;
 }
 
 .links li {
@@ -200,31 +141,29 @@ a:hover {
 }
 
 .github-link {
-  padding-left: 20px;
   background-image: url(github.svg);
-  background-size: 16px;
   background-repeat: no-repeat;
+  background-size: 16px;
   line-height: 22px;
+  padding-left: 20px;
 }
 
 #code-fragments ul {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 13px;
   width: 100%;
 }
 
-#code-fragments li {
-  margin-bottom: 10px;
-}
-
 #code-fragments a {
-  display: block;
-  padding-top: 80px;
   background-repeat: no-repeat;
   background-size: 100% auto;
-  width: 125px;
-  margin: 5px 10px;
-  font-size: 12px;
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  padding-top: 88px;
+  width: 132px;
 }
 
 #b-splines a {
@@ -243,72 +182,62 @@ a:hover {
   background-image: url(./thumbnails/murmur_hash.jpg);
 }
 
-#lanczos a {
-  background-image: url(./thumbnails/lanczos.jpg);
-}
-
-#color-picker a {
-  background-image: url(./thumbnails/color_picker.jpg);
-}
-
 dl {
   font-size: 13px;
   line-height: 20px;
-}
-
-dt {
-
-  xdisplay: inline-block;
-  float: left;
-  width: 200px;
-  clear: both;
-  margin-left: -200px;
-  text-align: right;
-  box-sizing: border-box;
-  padding-right: 10px;
-  font-weight: bold;
-
-}
-
-dd 
-{
-  xxdisplay: inline-block;
-  width: 99%;
-  box-sizing: border-box;
   margin: 0;
 }
 
+dt {
+  box-sizing: border-box;
+  clear: both;
+  float: left;
+  font-weight: 400;
+  margin-left: -200px;
+  padding-right: 10px;
+  text-align: right;
+  width: 200px;
+}
 
-#previously h2 {
-  background-image: linear-gradient(-45deg, hsl(0, 0%, 25%),
-                                              hsl(0, 0%, 25%) 11px, 
-                                              hsla(0, 0%, 0%, 0) 0),
-                    linear-gradient(-225deg, hsl(0, 0%, 25%),
-                                              hsl(0, 0%, 25%) 11px, 
-                                              hsla(0, 0%, 0%, 0) 0);
-  background-repeat: repeat-x;
-  background-size: 35px 15px;
-  background-position: 19px 0;
+dt b {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  vertical-align: baseline;
+  vertical-align: bottom;
+  width: 7.4px;
+}
 
-  margin: 0 -158px 20px -278px;
-  padding: 7px 158px;
+dd {
+  box-sizing: border-box;
+  margin: 0;
+  width: 99%;
+}
 
-  padding-top: 20px;
-  background-origin: border-box;
+#previously {
+  margin-top: 20px;
 }
 
 #previously a {
   background: url(arrow.svg) no-repeat 7px 50%;
   display: block;
   line-height: 24px;
-  padding-left: 30px;
+  margin-left: -60px;
+  padding-left: 60px;
 }
 
-h6 {
-  font-weight: normal;
-  margin: 45px -142px -45px 0;
-  text-align: right;
+#previously p {
+  margin-top: 0;
 }
 
+body::after {
+  content: '';
+  display: block;
+}
 
-
+body::after,
+#code-fragments {
+  page-break-before: always;
+}
