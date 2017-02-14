@@ -49,10 +49,11 @@ h4 {
 }
 
 h5 {
-  background-color: hsla(0, 0%, 0%, .1);
+  background-color: hsla(0, 0%, 0%, .7);
+  color: white;
   font-size: 10px;
   font-weight: 400;
-  line-height: 18px;
+  line-height: 14px;
   margin: 36px 0 0 -120px;
   padding: 0 0 0 120px;
 }
@@ -93,12 +94,17 @@ section {
   padding: 0 0 0 120px;
 }
 
-#projects h3 a {
-  background: url(arrow.svg) no-repeat 7px 50%;
+#projects h3 a,
+#previously a {
   display: block;
   height: 100%;
-  margin-left: -52px;
-  padding-left: 52px;
+}
+
+#projects h3 a::before,
+#previously a::before {
+  content: '\\';
+  float: left;
+  margin-left: -16px;
 }
 
 #dragonfly::before {
@@ -107,7 +113,7 @@ section {
   float: left;
   height: 42px;
   margin-left: -80px;
-  margin-top: 48px;
+  margin-top: 38px;
   width: 42px;
 }
 
@@ -220,11 +226,7 @@ dd {
 }
 
 #previously a {
-  background: url(arrow.svg) no-repeat 7px 50%;
-  display: block;
   line-height: 24px;
-  margin-left: -60px;
-  padding-left: 60px;
 }
 
 #previously p {
