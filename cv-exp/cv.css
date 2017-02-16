@@ -269,3 +269,9 @@ body::after,
 
 
 }
+
+@media (max-width: 650px)  {
+  body {
+    background-position: calc(100% - 44px) 76px;
+  }
+}
