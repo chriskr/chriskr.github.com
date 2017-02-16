@@ -9,7 +9,6 @@ html {
 
 body {
   background-image: url(logo.svg);
-  background-position: calc(100% - 108px) 112px;
   background-position: calc(100% - 86px) 112px;
   background-repeat: no-repeat;
   background-size: 44px;
@@ -53,7 +52,7 @@ h5 {
   color: white;
   font-size: 10px;
   font-weight: 400;
-  line-height: 14px;
+  line-height: 12px;
   margin: 36px 0 0 -120px;
   padding: 0 0 0 120px;
 }
@@ -87,8 +86,7 @@ section {
 }
 
 #projects h3 {
-  font-size: 16px;
-  font-weight: 400;
+  font: inherit;
   line-height: 18px;
   margin-left: -120px;
   padding: 0 0 0 120px;
@@ -140,6 +138,7 @@ a:hover {
 
 .links ul {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .links li {
@@ -152,6 +151,7 @@ a:hover {
   background-size: 16px;
   line-height: 22px;
   padding-left: 20px;
+  white-space: pre;
 }
 
 #code-fragments ul {
@@ -169,6 +169,7 @@ a:hover {
   font-size: 13px;
   font-weight: 400;
   padding-top: 88px;
+  padding-bottom: 5px;
   width: 132px;
 }
 
@@ -241,4 +242,41 @@ body::after {
 body::after,
 #code-fragments {
   page-break-before: always;
+}
+
+@media (max-width: 900px)  {
+  body {
+    padding-left: 50px;
+  }
+
+  h1,
+  h2 {
+    margin-left: -50px;
+    padding-left: 10px;
+  }
+
+  #dragonfly::before {
+    display: none;
+  }
+
+  h5 {
+    margin-left: -30px;
+    padding-left: 30px;
+  }
+
+  h6 {
+    letter-spacing: calc(3vw);
+    margin-left: -50px;
+  }
+}
+
+@media (max-width: 650px)  {
+  body {
+    background-position: calc(100% - 20px) 76px;
+  }
+
+  h6 {
+    letter-spacing: calc(2.5vw);
+    margin-left: -50px;
+  }
 }

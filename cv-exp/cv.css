@@ -1,7 +1,7 @@
 html {
   background-color: #f8f2e6;
   font-family: 'Libre Franklin', sans-serif;
-  font-size: 1em;
+  font-size: 16px;
   margin: 0;
   overflow-x: hidden;
   padding: 0;
@@ -17,8 +17,6 @@ body {
   max-width: 740px;
   padding: 0 20px 44px 140px;
 }
-
-
 
 h1 {
   font-size: 32px;
@@ -68,8 +66,6 @@ h6 {
   text-align: center;
 }
 
-
-
 #contact a {
   font-size: 13px;
 }
@@ -91,7 +87,6 @@ section {
 
 #projects h3 {
   font: inherit;
-  font-size: 1em;
   line-height: 18px;
   margin-left: -120px;
   padding: 0 0 0 120px;
@@ -209,10 +204,6 @@ dt {
   padding-right: 10px;
   text-align: right;
   width: 200px;
-}
-
-p {
-  font-size: 16px;
 }
 
 dt b {
