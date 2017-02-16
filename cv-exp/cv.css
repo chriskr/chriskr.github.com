@@ -143,6 +143,7 @@ a:hover {
 
 .links ul {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .links li {
@@ -155,6 +156,7 @@ a:hover {
   background-size: 16px;
   line-height: 22px;
   padding-left: 20px;
+  white-space: pre;
 }
 
 #code-fragments ul {
@@ -172,6 +174,7 @@ a:hover {
   font-size: 13px;
   font-weight: 400;
   padding-top: 88px;
+  padding-bottom: 5px;
   width: 132px;
 }
 
