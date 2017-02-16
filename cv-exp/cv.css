@@ -289,6 +289,12 @@ h6 {
 
 @media (max-width: 650px)  {
   body {
-    background-position: calc(100% - 44px) 76px;
+    background-position: calc(100% - 20px) 76px;
   }
+
+h6 {
+
+  letter-spacing: calc(2.8vw);
+  margin-left: -50px;
+}
 }
