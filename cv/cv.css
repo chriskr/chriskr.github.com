@@ -275,8 +275,13 @@ body::after,
     background-position: calc(100% - 20px) 76px;
   }
 
+  #projects h2 {
+    font-size: 77px;
+  }
+
   h6 {
-    letter-spacing: calc(2.5vw);
+    letter-spacing: calc(2vw);
     margin-left: -50px;
+    margin-right: -20px;
   }
 }
