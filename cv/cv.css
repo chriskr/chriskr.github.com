@@ -280,7 +280,7 @@ body::after,
   }
 
   h6 {
-    letter-spacing: calc(2vw);
+    letter-spacing: calc(2.3vw);
     margin-left: -50px;
     margin-right: -20px;
   }
