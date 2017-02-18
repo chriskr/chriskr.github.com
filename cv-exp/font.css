@@ -42,3 +42,12 @@
   src: local('Libre Franklin Italic'), local('LibreFranklin-Italic'), url(https://fonts.gstatic.com/s/librefranklin/v1/zrsyK9EytLQ07oRM9IZIsUGWZPQhhQLxjq7ViWViJIs.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
+
+/* latin */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Libre Franklin Italic'), local('LibreFranklin-Italic'), url(https://fonts.gstatic.com/s/librefranklin/v1/zrsyK9EytLQ07oRM9IZIsUGWZPQhhQLxjq7ViWViJIs.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}

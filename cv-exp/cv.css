@@ -1,5 +1,6 @@
 html {
   background-color: #f8f2e6;
+  background-color: hsl(30, 56%, 94%);
   font-family: 'Libre Franklin', sans-serif;
   font-size: 16px;
   margin: 0;
@@ -8,10 +9,12 @@ html {
 }
 
 body {
+  /*
   background-image: url(logo.svg);
   background-position: calc(100% - 86px) 112px;
   background-repeat: no-repeat;
   background-size: 44px;
+  */
   box-sizing: border-box;
   margin: 0 auto;
   max-width: 740px;
@@ -24,6 +27,19 @@ h1 {
   line-height: 45px;
   margin: 0 0 25px -120px;
   padding-top: 24px;
+}
+
+h1::after {
+  content: '';
+  float: right;
+  width: 44px;
+  height: 44px;
+  background-image: url(logo.svg);
+  background-position: calc(100% - 86px) 112px;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 44px;
+  margin: 34px 66px 0 0;
 }
 
 h2 {
@@ -41,10 +57,18 @@ h3 {
 
 h4 {
   display: flex;
+  flex-wrap: wrap;
   font-weight: 400;
   justify-content: space-between;
-  margin: 0;
+  margin: 0 -10px;
   padding: 38px 0 0;
+  xmargin-left: -130px;
+}
+
+h4 a,
+h4 span {
+  padding: 0 10px;
+  white-space: nowrap;
 }
 
 h5 {
@@ -66,12 +90,25 @@ h6 {
   text-align: center;
 }
 
-#contact a {
+#contact div {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+#contact a, 
+#contact span {
   font-size: 13px;
 }
 
 section {
   margin-top: 15px;
+}
+
+#strengths {
+  font-size: 13px;
+  font-style: italic;
+  margin-top: 11px;
 }
 
 #projects {
@@ -257,35 +294,42 @@ body::after,
 
   #dragonfly::before {
     display: none;
-
   }
 
   h5 {
-
     margin-left: -30px;
     padding-left: 30px;
   }
 
-h6 {
-
-  letter-spacing: calc(3vw);
-  margin-left: -50px;
-}
-
-
-
-
-
+  h6 {
+    letter-spacing: calc(3vw);
+    margin-left: -50px;
+  }
 }
 
 @media (max-width: 650px)  {
-  body {
-    background-position: calc(100% - 20px) 76px;
+h1::after {
+
+  margin: 0;
+}
+
+  #projects h2 {
+    font-size: 77px;
   }
 
-h6 {
-
-  letter-spacing: calc(2.8vw);
-  margin-left: -50px;
+  h6 {
+    letter-spacing: calc(2.2vw);
+    margin-left: -50px;
+    margin-right: -20px;
+  }
 }
+
+
+@media (max-width: 310px)  {
+h1::after {
+  width: 22px;
+  height: 22px;
+  background-size: 22px;
+}
+
 }
