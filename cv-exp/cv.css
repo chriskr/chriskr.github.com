@@ -170,16 +170,17 @@ a:hover {
 .links {
   font-size: 13px;
   padding-bottom: 10px;
-  text-align: right;
+  xtext-align: right;
 }
 
 .links ul {
-  display: flex;
-  flex-wrap: wrap;
+  XXdisplay: flex;
+  XXflex-wrap: wrap;
 }
 
 .links li {
   padding: 5px;
+  display: inline-block;
 }
 
 .github-link {
@@ -192,12 +193,17 @@ a:hover {
 }
 
 #code-fragments ul {
-  display: -webkit-box;  
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  xdisplay: flex;
+  xflex-wrap: wrap;
+  xjustify-content: space-between;
   margin-top: 13px;
-  width: 100%;
+  xwidth: 100%;
+  margin-right: -20px;
+}
+
+#code-fragments li {
+  display: inline-block;
+  margin-right: 17px;
 }
 
 #code-fragments a {
