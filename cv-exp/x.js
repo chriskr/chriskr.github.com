@@ -27,4 +27,5 @@ if (!Array.from) {
                        .map(function(n) { return '<b>' + n + '</b>'; })
                        .join('');
   }
+  document.body.appendChild(document.createElement('div')).textContent = 'ok'
 })();
