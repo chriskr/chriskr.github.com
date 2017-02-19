@@ -1,0 +1,27 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <rect x="0" y="0" width="100%" height="100%" fill="hsla(220, 100%, 50%, .0)" />
+  <def>
+    <path id="edge" d="M 13 0 L 0 -40 -13 0 Z" />
+    <g id="star">
+        <use xlink:href="#edge" transform="rotate(0)"/>
+        <use xlink:href="#edge" transform="rotate(72)"/>
+        <use xlink:href="#edge" transform="rotate(144)"/>
+        <use xlink:href="#edge" transform="rotate(216)"/>
+        <use xlink:href="#edge" transform="rotate(288)"/>
+      </g>
+  </def>
+
+  <g fill="black">
+  <path d = "M 20 10
+           A 37 37 300 1 0 80 10
+           A 45 45 300 1 1 20 10
+           "
+           />
+  <path d = "M 20 90
+           A 25 25 300 1 1 80 90
+           A 145 145 300 0 1 20 90
+           "
+      />
+</g>
+        <usex xlink:href="#star" transform="translate(50, 78) scale(.3)" fill="white"/>
+</svg>
