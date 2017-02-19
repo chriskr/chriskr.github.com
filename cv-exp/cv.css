@@ -316,6 +316,7 @@ body::after,
 
   #strengths::before,
   #dragonfly h3 + p::before {
+    display: none;
     width: 22px;
         margin-left: -34px;
         height: 22px;
