@@ -107,18 +107,18 @@ section {
 }
 
 #strengths {
-  font-size: 13px;
+  xfont-size: 13px;
   xfont-style: italic;
   margin-top: 33px;
-font-size: 19px;
+xfont-size: 19px;
     /* font-style: italic; */
     margin-top: 33px;
-    font-weight: 300;
+    xfont-weight: 300;
 }
 
 #strengths::before {
   background: no-repeat 50% 50%/100% url(wiking.svg);
-  content: '';
+  xcontent: '';
   float: left;
   height: 44px;
   margin-left: -80px;
@@ -186,6 +186,7 @@ a:hover {
   font-size: 13px;
   padding-bottom: 10px;
   xtext-align: right;
+  margin: 0 -5px;
 }
 
 .links ul {
