@@ -161,6 +161,7 @@ ul {
 
 a {
   color: inherit;
+  cursor: pointer;
 }
 
 .links {
@@ -275,7 +276,7 @@ body::after,
   page-break-before: always;
 }
 
-@media not print (max-width: 900px)  {
+@media only screen and (max-width: 900px)  {
   body {
     padding-left: 50px;
   }
@@ -302,7 +303,7 @@ body::after,
   }
 }
 
-@media not print (max-width: 650px)  {
+@media only screen and (max-width: 650px)  {
   h1::after {
     margin: 0;
   }
@@ -319,7 +320,7 @@ body::after,
 }
 
 
-@media not print (max-width: 310px)  {
+@media only screen and (max-width: 310px)  {
   h1 {
     font-size: 10vw;
   }
