@@ -1,8 +1,7 @@
 <svg viewBox="0 0 80 320" xmlns="http://www.w3.org/2000/svg">
-<!--<path d="M 39,0 L 39,280 0,280 40,320 80,280 41, 280 41,0 z" fill="white"/>-->
-<!--<path d="M 40,0 L 0,40 39,40 39,320 41,320 41,40 80,40 z" fill="white"/>-->
-<g fill="white">
-<circle cx="40" cy="40" r="30" />
-<rect x="38" y="70" width="4" height="250"  />
-</g>
+  <g fill="white">
+    <circle cx="40" cy="40" r="30" />
+    <rect x="38" y="70" width="4" height="250" />
+  </g>
 </svg>
+
