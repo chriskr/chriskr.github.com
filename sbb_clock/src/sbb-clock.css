@@ -1,4 +1,6 @@
 html, body {
+  color: white;
+  font: menu;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -47,8 +49,6 @@ svg {
 }
 
 h1 {
-  color: white;
-  font: menu;
   font-size: 7vh;
   font-weight: 300;
   height: 7vh;
@@ -56,4 +56,18 @@ h1 {
   margin: 3vh 0 0 0;
   opacity: 0.5;
   order: 1;
+}
+
+#repo-link {
+  bottom: 25px;
+  color: inherit;
+  opacity: 0.5;
+  position: fixed;
+  right: 25px;
+  text-decoration: none;
+  white-space: pre;
+}
+
+#repo-link:hover {
+  text-decoration: underline;
 }
