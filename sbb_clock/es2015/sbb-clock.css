@@ -10,7 +10,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden;
 }
 
 body::before {
@@ -19,34 +18,31 @@ body::before {
   background-repeat: no-repeat;
   background-size: cover;
   content: '';
-  height: calc(100% + 80px);
-  left: -40px;
+  height: 100%;
+  left: 0;
   opacity: .85;
   position: absolute;
-  top: -40px;
-  width: calc(100% + 80px);
+  top: 0;
+  width: 100%;
   z-index: -1;
-  -webkit-filter: blur(2vh);
 }
 
 body::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 71vh;
-  width: 6vh;
-  height: 24vh;
-  margin-left: -3vh;
   background-image: url(deco.svg);
   background-repeat: no-repeat;
-  xbackground-size: 100% auto;
+  content: '';
+  height: 24vh;
+  left: 50%;
+  margin-left: -3vh;
   opacity: .15;
+  position: absolute;
+  top: 71vh;
+  width: 6vh;
   z-index: -1;
 }
 
 svg {
   height: 15vh;
-  xopacity: 0.85;
   margin-top: 10vh;
 }
 
@@ -54,9 +50,9 @@ h1 {
   color: white;
   font: menu;
   font-size: 7vh;
+  font-weight: 300;
   height: 7vh;
   line-height: 7vh;
-  font-weight: 300;
   margin: 3vh 0 0 0;
   opacity: 0.5;
   order: 1;
