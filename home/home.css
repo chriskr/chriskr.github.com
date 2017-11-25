@@ -1,0 +1,154 @@
+html {
+  background-color: hsl(30, 56%, 94%);
+  background-image: url(logo.svg), url(a.svg), url(b.svg);
+  background-position: bottom 30px right 30px, 50% 50%, 60% 40%;
+  background-repeat: no-repeat;
+  background-size: 50px, 75%, 165%;
+  border-bottom: 120px solid hsla(30, 56%, 14%, .1);
+  box-sizing: border-box;
+  color: hsla(0, 0%, 0%, .65);
+  font-family: 'Inconsolata', sans-serif;
+  font-size: 16px;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 984px;
+  padding: 0 20px;
+}
+
+h1 {
+  font: inherit;
+  font-style: italic;
+  margin: 0;
+  text-align: right;
+}
+
+h2 {
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+h5 {
+  display: flex;
+  font: inherit;
+  justify-content: space-between;
+  margin: 58px 0 -70px;
+}
+
+body > ul {
+  display: flex;
+  flex: 1;
+  font-size: 32px;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 50px 0 0;
+}
+
+body > ul::before {
+  background-image: url(wiking.svg);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 42px;
+  color: transparent;
+  content: 'xxx';
+  height: 42px;
+  margin-top: -1px;
+  padding-right: 5px;
+  white-space: nowrap;
+  width: 42px;
+}
+
+.menu {
+  cursor: pointer;
+  height: 40px;
+  line-height: 38px;
+  padding: 0 7px;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.menu:last-of-type {
+  padding-right: 0;
+}
+
+.menu:hover {
+  color: black;
+}
+
+.menu a {
+  white-space: nowrap;
+}
+
+.menu h2::before,
+.menu h2::after,
+.menu a::before,
+.menu a::after {
+  color: transparent;
+  content: '[';
+  display: inline-block;
+  padding: 0 3px 0;
+}
+
+.menu h2::after,
+.menu a::after {
+  content: ']';
+  padding: 0 0 0 3px;
+}
+
+.menu h2:hover::before,
+.menu h2:hover::after,
+.menu a:hover::before,
+.menu a:hover::after {
+  color: black;
+}
+
+.menu ul {
+  border: 40px solid transparent;
+  border-top-width: 0;
+  box-sizing: border-box;
+  color: black;
+  font-size: 16px;
+  left: -32px;
+  line-height: 18px;
+  list-style: none;
+  min-width: 100%;
+  opacity: 0;
+  padding: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 40px;
+  transition: opacity 0.3s;
+}
+
+.menu:hover ul {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.menu li {
+  padding: 0;
+  white-space: nowrap;
+}
+
+.menu li a {
+  display: block;
+  padding: 7px 9px;
+}
+
+.menu li a:hover {
+  color: black;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
