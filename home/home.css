@@ -18,7 +18,7 @@ html::after {
   background-image: url(a.svg);
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: 70%;
+  background-size: 65%;
   bottom: 120px;
   content: '';
   left: 0;
