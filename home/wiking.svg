@@ -1,5 +1,5 @@
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <g fill="hsl(30, 56%, 14%)" opacity="1">
+  <g fill="hsl(30, 56%, 14%)">
     <path d = "M  20    10
                A  37    37   1 1 0 80 10
                   45    45   1 1 1 20 10" />

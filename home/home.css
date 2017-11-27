@@ -1,16 +1,38 @@
 html {
   background-color: hsl(30, 56%, 94%);
-  background-image: url(logo.svg), url(a.svg), url(b.svg);
-  background-position: bottom 30px right 30px, 50% 50%, 60% 40%;
+  background-image: url(logo.svg);
+  background-position: bottom 30px right 30px;
   background-repeat: no-repeat;
-  background-size: 50px, 75%, 165%;
-  border-bottom: 120px solid hsla(30, 56%, 14%, .1);
+  background-size: 50px;
+  border-bottom: 120px solid hsl(30, 56%, 14%);
   box-sizing: border-box;
-  color: hsla(0, 0%, 0%, .65);
+  color: hsl(30, 56%, 14%);
   font-family: 'Inconsolata', sans-serif;
   font-size: 16px;
   height: 100%;
   margin: 0;
+  overflow-x: hidden;
+}
+
+html::after {
+  background-image: url(a.svg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 70%;
+  bottom: 120px;
+  content: '';
+  left: 0;
+  opacity: 1;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transition: background-position 1s, background-size 1s;
+  width: 100%;
+}
+
+html.menu-active::after {
+  background-position: left 30px bottom 30px;
+  background-size: 150px;
 }
 
 body {
@@ -34,6 +56,8 @@ h2 {
   margin: 0;
   padding: 0;
   white-space: nowrap;
+  position: relative;
+  z-index: 1;
 }
 
 h5 {
@@ -41,6 +65,7 @@ h5 {
   font: inherit;
   justify-content: space-between;
   margin: 58px 0 -70px;
+  color: hsl(30, 56%, 94%);
 }
 
 body > ul {
@@ -80,10 +105,6 @@ body > ul::before {
   padding-right: 0;
 }
 
-.menu:hover {
-  color: black;
-}
-
 .menu a {
   white-space: nowrap;
 }
@@ -108,14 +129,11 @@ body > ul::before {
 .menu h2:hover::after,
 .menu a:hover::before,
 .menu a:hover::after {
-  color: black;
+  color: hsl(30, 56%, 14%);
 }
 
 .menu ul {
   border: 40px solid transparent;
-  border-top-width: 0;
-  box-sizing: border-box;
-  color: black;
   font-size: 16px;
   left: -32px;
   line-height: 18px;
@@ -125,7 +143,7 @@ body > ul::before {
   padding: 0;
   pointer-events: none;
   position: absolute;
-  top: 40px;
+  top: 0;
   transition: opacity 0.3s;
 }
 
@@ -139,16 +157,9 @@ body > ul::before {
   white-space: nowrap;
 }
 
-.menu li a {
-  display: block;
-  padding: 7px 9px;
-}
-
-.menu li a:hover {
-  color: black;
-}
-
 a {
+  display: block;
   color: inherit;
+  padding: 7px 9px;
   text-decoration: none;
 }
