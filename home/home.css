@@ -26,13 +26,13 @@ html::after {
   pointer-events: none;
   position: absolute;
   top: 0;
-  transition: background-position 1s, background-size 1s;
+  transition: transform 1s;
+  transform-origin: 0 100%;
   width: 100%;
 }
 
 html.menu-active::after {
-  background-position: left 30px bottom 30px;
-  background-size: 150px;
+  transform: scale(.25);
 }
 
 body {
