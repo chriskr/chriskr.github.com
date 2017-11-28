@@ -8,13 +8,16 @@ StyleSheetList.prototype.getDeclaration = function(
         }) + '(?:$|\\s*,)');
     for (var j = 0, sheet; sheet = this[j]; j++) {
       // does not take into account import rules
-      if (sheet.cssRules && sheet.cssRules.length) {
-        for (var k = 0, rules = sheet.cssRules, rule; rule = rules[k]; k++) {
-          if (rule.type == 1 && reSelector.test(rule.selectorText)) {
-            return rule.style;
+      try {
+        if (sheet.cssRules && sheet.cssRules.length) {
+          for (var k = 0, rules = sheet.cssRules, rule; rule = rules[k]; k++) {
+            if (rule.type == 1 && reSelector.test(rule.selectorText)) {
+              return rule.style;
+            }
           }
         }
-      }
+      } catch (e) {
+      };
     }
   }
   return null;
