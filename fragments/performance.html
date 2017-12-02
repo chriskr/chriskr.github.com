@@ -66,6 +66,17 @@ canvas
   left: -100px;
 }
 
+.is-running #configuration,
+.is-running input[value="start"],
+input[value="pause"],
+input[value="continue"] {
+  visibility: hidden;
+}
+
+.is-running input[value="pause"],
+.is-running input[value="continue"] {
+  visibility: visible;
+}
 </style>
 
 <script>
@@ -89,7 +100,6 @@ window.timer = new function()
 
   var _on_frame = function()
   {
-    var now = Date.now();
     var is_running = false;
     if (_before_frame)
       _before_frame();
@@ -109,10 +119,7 @@ window.timer = new function()
       _getfps();
 
     if (is_running)
-    {
-      var delta = _time_delta - (Date.now() - now) >> 0;
-      _timeout = setTimeout(_on_frame, delta > 0 ? delta : 0);
-    }
+      _timeout = requestAnimationFrame(_on_frame);
   };
 
   this.set = function(fn)
@@ -252,7 +259,7 @@ var BallPrototype = function()
 
   this._init = function(canvas_width, canvas_height, ctx, src_ctx)
   {
-    max_radius = 5 + (canvas_width / 1920) * 20 >> 0;
+    max_radius = 5 + Math.pow(canvas_width / window.screen.width, .5) * 20 | 0;
     Animation.prototype._init.call(this);
     this._ctx = ctx;
     this.spline_x = new Spline([0, canvas_width * rand()]);
@@ -442,7 +449,7 @@ window.tester = new function()
       _add_animations(DELTA);
       window.timer.set_on_frame(_on_frame);
     }
-    document.getElementById("configuration").style.display = "none";
+    document.getElementById("legend").className = "is-running";
   };
 };
 

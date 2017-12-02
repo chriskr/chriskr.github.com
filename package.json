@@ -1,0 +1,10 @@
+{
+  "name": "home",
+  "scripts": {
+    "build": "babel home --presets env -d home-es2015"
+  },
+  "devDependencies": {
+    "babel-cli": "latest",
+    "babel-preset-env": "latest"
+  }
+}

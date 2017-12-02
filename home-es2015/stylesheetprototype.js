@@ -1,14 +1,15 @@
-StyleSheetList.prototype.getDeclaration = function(
-    /* selector1, selector2, ... */) {
+'use strict';
+
+StyleSheetList.prototype.getDeclaration = function ()
+/* selector1, selector2, ... */{
   for (var i = 0; i < arguments.length; i++) {
     var selector = arguments[i];
-    var reSelector =
-        new RegExp('(?:^|,\\s*)' + selector.replace(/[\[\]\-]/g, function(m) {
-          return '\\' + m;
-        }) + '(?:$|\\s*,)');
+    var reSelector = new RegExp('(?:^|,\\s*)' + selector.replace(/[\[\]\-]/g, function (m) {
+      return '\\' + m;
+    }) + '(?:$|\\s*,)');
     for (var j = 0, sheet; sheet = this[j]; j++) {
       // Doesn't take into account import rules.
-      // Firefox trows if the style sheet is from a different origin.
+      // Firefox trows if the style sheet is from a different domain.
       try {
         if (sheet.cssRules && sheet.cssRules.length) {
           for (var k = 0, rules = sheet.cssRules, rule; rule = rules[k]; k++) {
@@ -17,8 +18,7 @@ StyleSheetList.prototype.getDeclaration = function(
             }
           }
         }
-      } catch (e) {
-      };
+      } catch (e) {};
     }
   }
   return null;
