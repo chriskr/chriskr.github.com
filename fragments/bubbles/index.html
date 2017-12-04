@@ -1,0 +1,25 @@
+<!doctype html>
+<title>animation performance</title>
+<meta charset=utf-8>
+<link rel=stylesheet href=bubbles.css>
+<script src=timer.js></script>
+<script src=spline.js></script>
+<script src=animation.js></script>
+<script src=bubble.js></script>
+<script src=e_bubble.js></script>
+<script src=source_canvas.js></script>
+<script src=test_runner.js></script>
+<div id=legend>
+  <h1>animation performance</h1>
+  <div>
+    <input type=button onclick=window.testRunner.continue() value=continue>
+    <input type=button onclick=window.testRunner.pause() value=pause>
+    <input type=button onclick=window.testRunner.start() value=start>
+    target fps: 50 - current fps: <span id='framerate'></span> - object count: <span id='object-count'></span>
+    <span id=configuration>
+      <label><input type=radio name=type id=type-canvas checked> canvas</label>
+      <label><input type=radio name=type id=type-element> elements</label>
+    </span>
+  </div>
+</div>
+<script> window.testRunner = new TestRunner(); </script>
