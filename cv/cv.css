@@ -89,7 +89,7 @@ h6 {
   width: 100%;
 }
 
-#contact a, 
+#contact a,
 #contact span {
   font-size: 13px;
 }
@@ -219,8 +219,8 @@ a {
   background-image: url(./thumbnails/sbb_clock.jpg);
 }
 
-#murmur_hash a {
-  background-image: url(./thumbnails/murmur_hash.jpg);
+#react_date_time_picker a {
+  background-image: url(./thumbnails/react_date_time_picker.jpg);
 }
 
 dl {
