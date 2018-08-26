@@ -273,9 +273,16 @@ body::after {
   display: block;
 }
 
-body::after,
-#code-fragments {
-  page-break-before: always;
+
+@media print {
+  body::after,
+  #code-fragments {
+    page-break-before: always;
+  }
+
+  #code-fragments {
+    padding-top: 30px;
+  }
 }
 
 @media only screen and (max-width: 900px)  {
