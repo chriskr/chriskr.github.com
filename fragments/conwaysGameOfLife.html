@@ -1,0 +1,160 @@
+<!doctype html>
+<title>Conway's Game of Life</title>
+<link href="https://fonts.googleapis.com/css?family=Libre+Franklin:300" rel="stylesheet">
+<style>
+
+html,
+body {
+  font-family: 'Libre Franklin', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+h1,
+a,
+button {
+  background: none;
+  border: none;
+  color: hsl(210, 100%, 60%);
+  font: inherit;
+  font-size: 72px;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+a,
+button {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+a:focus,
+button:focus {
+  outline: none;
+}
+
+#container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell,
+.cell.live:hover {
+  background-color: hsl(210, 100%, 70%);
+  cursor: pointer;
+}
+
+.cell.live,
+.cell:hover {
+  background-color: white;
+}
+
+</style>
+
+<h1>Conway's Game of Life</h1>
+
+<a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">wikipedia</a>
+
+<div id=container></div>
+
+<button>start</button>
+
+<script>
+
+const WIDTH = 10;
+const HEIGHT = 10;
+const COUNT_X = 50;
+const COUNT_Y = 50;
+
+const range = function* (n) {
+  for (let i = 0; i < n; i++) {
+    yield i;
+  }
+};
+
+const createCell = () => {
+  const span = document.createElement('span');
+  span.classList.add('cell');
+  return span;
+};
+
+const addStyle = () => {
+  const sheet = document.createElement('style');
+  sheet.textContent = `
+  #container {
+    width: ${WIDTH * COUNT_X + 1}px;
+  }
+  .cell {
+    width: ${WIDTH}px;
+    height: ${HEIGHT}px;
+  }
+  `;
+  document.body.appendChild(sheet);
+};
+
+const setUp = () => {
+  addStyle();
+  const container = document.querySelector('#container');
+  [...range(COUNT_X * COUNT_Y)].forEach(() => container.appendChild(createCell()));
+  let interval = null;
+  document.addEventListener('click', event => {
+    const cell = event.target.closest('.cell');
+    if (cell && !interval) {
+      cell.classList.toggle('live');
+    }
+  });
+  const button = document.querySelector('button');
+  button.addEventListener('click', event => {
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+      button.textContent = 'start';
+    } else {
+      interval = setInterval(iterate, 300);
+      button.textContent = 'stop';
+    }
+  });
+};
+
+const nToXY = n => {
+  const x = n % COUNT_X;
+  const y = (n - x) / COUNT_X;
+  return [x, y];
+};
+
+const getNeighbours = ([x, y]) => [
+  [x - 1, y - 1], [x, y - 1], [x + 1, y - 1],
+  [x - 1, y],  [x + 1, y],
+  [x - 1, y + 1], [x, y + 1], [x + 1, y + 1],
+].filter(([x, y]) => x > -1 && x < COUNT_X && y > -1 && y < COUNT_Y);
+
+const getStateAtXY = state => ([x, y]) => state[x + (y * COUNT_Y)];
+
+const iterate = () => {
+  // Any live cell with fewer than two live neighbors dies, as if by under population.
+  // Any live cell with two or three live neighbors lives on to the next generation.
+  // Any live cell with more than three live neighbors dies, as if by overpopulation.
+  // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+  const children = [...document.querySelector('#container').children];
+  const state = children.map(cell => cell.classList.contains('live'));
+  const stateAt = getStateAtXY(state);
+  state.map((isLive, index) => {
+    const liveNeighbours = getNeighbours(nToXY(index)).map(stateAt).filter(Boolean).length;
+    return isLive ? 1 < liveNeighbours && liveNeighbours < 4 : liveNeighbours === 3;
+  }).forEach((state, index) => children[index].classList.toggle('live', state));
+};
+
+setUp();
+
+</script>
+
