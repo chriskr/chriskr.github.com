@@ -128,6 +128,17 @@ GeneratorPolyfill.prototype = new function() {
   }
 })();
 
+if (!new Map().entries && new Map().forEach) {
+  Map.prototype.entries = function() {
+    var list = [];
+    this.forEach(function(value, key) {
+      list.push([key, value]);
+    });
+    return new GeneratorPolyfill(list);
+  }
+  console.info('Patched entries for Map');
+}
+
 if (new Map([[1, 1]]).size === 0) {
   (function(MapClass) {
     // eslint-disable-next-line

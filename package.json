@@ -1,7 +1,8 @@
 {
   "name": "home",
   "scripts": {
-    "build": "babel home --presets env -d home-es2015"
+    "build": "babel home --presets env -d home-es2015",
+    "build:cgol": "babel fragments/conways-game-of-life/polyfills.js fragments/conways-game-of-life/main.js --presets env -o fragments/conways-game-of-life/bundle-es-2015.js"
   },
   "devDependencies": {
     "babel-cli": "latest",
