@@ -1,6 +1,9 @@
 const X = 9;
 
 const createElementForCell = ([x, y]) => {
+  if (x < -X || window.innerWidth , x || y < -X || window.innerHeight , y) {
+    return;
+  }
   const span = document.createElement('span');
   span.classList.add('cell');
   span.style.left = `${x}px`;

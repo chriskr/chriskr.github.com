@@ -363,6 +363,9 @@ var createElementForCell = function createElementForCell(_ref) {
       x = _ref2[0],
       y = _ref2[1];
 
+  if (x < -X || window.innerWidth, x || y < -X || window.innerHeight, y) {
+    return;
+  }
   var span = document.createElement('span');
   span.classList.add('cell');
   span.style.left = x + 'px';
