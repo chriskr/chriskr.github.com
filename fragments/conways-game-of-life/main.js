@@ -1,8 +1,8 @@
 const X = 9;
 
 const createElementForCell = ([x, y]) => {
-  if (x < -X || window.innerWidth , x || y < -X || window.innerHeight , y) {
-    return;
+  if (x < -X || window.innerWidth < x || y < -X || window.innerHeight < y) {
+    return null;
   }
   const span = document.createElement('span');
   span.classList.add('cell');
@@ -45,8 +45,11 @@ const getStateFromDOM = () => new Cells(
 const updateDOM = liveCells => {
   const container = document.querySelector('#container');
   container.textContent = '';
-  liveCells.getAll().forEach(
-    ([x, y]) => container.appendChild(createElementForCell([x * X, y * X])));
+  liveCells
+  .getAll()
+  .map(([x, y]) => createElementForCell([x * X, y * X]))
+  .filter(Boolean)
+  .forEach(ele => container.appendChild(ele));
 };
 
 const snap = x  => {
@@ -134,8 +137,10 @@ const setUp = () => {
       cell.remove();
     } else if (!event.target.closest('button, a, h1')) {
       const {clientX: x, clientY: y} = event;
-      document.querySelector('#container')
-          .appendChild(createElementForCell([snap(x), snap(y)]));
+      const ele = createElementForCell([snap(x), snap(y)]);
+      if (ele) {
+        document.querySelector('#container').appendChild(ele);
+      }
     }
   });
 

@@ -363,8 +363,8 @@ var createElementForCell = function createElementForCell(_ref) {
       x = _ref2[0],
       y = _ref2[1];
 
-  if (x < -X || window.innerWidth, x || y < -X || window.innerHeight, y) {
-    return;
+  if (x < -X || window.innerWidth < x || y < -X || window.innerHeight < y) {
+    return null;
   }
   var span = document.createElement('span');
   span.classList.add('cell');
@@ -410,12 +410,14 @@ var getStateFromDOM = function getStateFromDOM() {
 var updateDOM = function updateDOM(liveCells) {
   var container = document.querySelector('#container');
   container.textContent = '';
-  liveCells.getAll().forEach(function (_ref6) {
+  liveCells.getAll().map(function (_ref6) {
     var _ref7 = _slicedToArray(_ref6, 2),
         x = _ref7[0],
         y = _ref7[1];
 
-    return container.appendChild(createElementForCell([x * X, y * X]));
+    return createElementForCell([x * X, y * X]);
+  }).filter(Boolean).forEach(function (ele) {
+    return container.appendChild(ele);
   });
 };
 
@@ -547,7 +549,10 @@ var setUp = function setUp() {
       var x = event.clientX,
           y = event.clientY;
 
-      document.querySelector('#container').appendChild(createElementForCell([snap(x), snap(y)]));
+      var ele = createElementForCell([snap(x), snap(y)]);
+      if (ele) {
+        document.querySelector('#container').appendChild(ele);
+      }
     }
   });
 
