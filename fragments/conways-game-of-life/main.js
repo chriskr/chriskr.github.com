@@ -1,14 +1,15 @@
 const X = 9;
 
-const createElementForCell = ([x, y]) => {
-  if (x < -X || window.innerWidth < x || y < -X || window.innerHeight < y) {
-    return null;
-  }
-  const span = document.createElement('span');
-  span.classList.add('cell');
-  span.style.left = `${x}px`;
-  span.style.top = `${y}px`;
-  return span;
+const translate = (matrix, left, top) => matrix.map(([x, y]) => [left + x, top + y]);
+
+const scale = ([x, y]) => [x * X, y * X];
+
+const isOnScreen = ([x, y]) => (-X < x && x < window.innerWidth &&
+                                -X < y && y < window.innerHeight);
+
+const snap = x  => {
+  const s = (x / X) | 0;
+  return s * X;
 };
 
 const addStyle = () => {
@@ -16,22 +17,58 @@ const addStyle = () => {
   sheet.textContent = `.cell {width: ${X}px; height: ${X}px;}`;
 };
 
-const startState = [
-  [0, 0], [1, 0], [2, 0],         [4, 0],
-  [0, 1],
-                          [3, 2], [4, 2],
-          [1, 3], [2, 3],         [4, 3],
-  [0, 4],         [2, 4],         [4, 4]
-];
+const getPosFromIndexAndWidth =(width, index) => {
+  const x = index % width;
+  const y = (index - x) / width;
+  return [x, y];
+}
 
-const translate = (matrix, left, top) => matrix.map(([x, y]) => [left + x, top + y]);
+const getCellsFromShape = ({data, width, height}) => data.map(
+  (bit, index) => bit === 0 ? null : getPosFromIndexAndWidth(width, index)
+).filter(Boolean);
 
-const paintStartState = () => {
+const shapeToCanvas = ({data, width, height}, scale) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = width * scale;
+  canvas.height = height * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  data.forEach((bit, index) => {
+    if (bit == 1) {
+      const [x, y] = getPosFromIndexAndWidth(width, index);
+      ctx.rect(x * scale, y * scale, scale, scale);
+    }
+  });
+  ctx.fill();
+  return canvas;
+};
+
+const addShapes = () => {
+  const shapeList = document.querySelector('#shape-list');
+  shapes.forEach((shape, index) => {
+    const canvas = shapeToCanvas(shape, 4);
+    const li = document.createElement('li');
+    li.title = shape.name;
+    li.classList.add('shape');
+    li.dataset.index = String(index);
+    li.appendChild(canvas);
+    shapeList.appendChild(li);
+  });
+};
+
+const createElementForCell = ([x, y], span = document.createElement('span')) => {
+  span.classList.add('cell');
+  span.style.left = `${x}px`;
+  span.style.top = `${y}px`;
+  return span;
+};
+
+const paintStartState = (shape = shapes[0]) => {
   const wikiBox = document.querySelector('a').getBoundingClientRect();
-  const buttonBox = document.querySelector('button').getBoundingClientRect();
-  const top = (((wikiBox.bottom + buttonBox.top) / 2) - (5 * X / 2)) / X | 0;
-  const left = ((window.innerWidth / 2) - (5 * X / 2)) / X | 0;
-  updateDOM(new Cells(translate(startState, left, top)));
+  const buttonBox = document.querySelector('#controls').getBoundingClientRect();
+  const top = (((wikiBox.bottom + buttonBox.top) / 2) - (shape.height * X / 2)) / X | 0;
+  const left = ((window.innerWidth / 2) - (shape.width * X / 2)) / X | 0;
+  updateDOM(new Cells(translate(getCellsFromShape(shape), left, top)));
 };
 
 const getStateFromDOM = () => new Cells(
@@ -44,17 +81,10 @@ const getStateFromDOM = () => new Cells(
 
 const updateDOM = liveCells => {
   const container = document.querySelector('#container');
+  const children = [...container.children];
   container.textContent = '';
-  liveCells
-  .getAll()
-  .map(([x, y]) => createElementForCell([x * X, y * X]))
-  .filter(Boolean)
-  .forEach(ele => container.appendChild(ele));
-};
-
-const snap = x  => {
-  const s = (x / X) | 0;
-  return s * X;
+  liveCells.getAll().map(scale).filter(isOnScreen)
+  .forEach(pos => container.appendChild(createElementForCell(pos, children.pop())));
 };
 
 class Cells {
@@ -126,6 +156,7 @@ const setUp = () => {
   let interval = null;
 
   addStyle();
+  addShapes();
   paintStartState();
 
   document.addEventListener('click', event => {
@@ -135,18 +166,16 @@ const setUp = () => {
     const cell = event.target.closest('.cell');
     if (cell) {
       cell.remove();
-    } else if (!event.target.closest('button, a, h1')) {
+    } else if (!event.target.closest('.button, a, h1')) {
       const {clientX: x, clientY: y} = event;
-      const ele = createElementForCell([snap(x), snap(y)]);
-      if (ele) {
-        document.querySelector('#container').appendChild(ele);
-      }
+      document.querySelector('#container')
+      .appendChild(createElementForCell([snap(x), snap(y)]));
     }
   });
 
   document.addEventListener('mousemove', event => {
     const style = document.querySelector('.indicator').style;
-    if (interval || event.target.closest('button, a, h1')) {
+    if (interval || event.target.closest('.button, a, h1')) {
       style.opacity = 0;
     } else {
       const {clientX: left, clientY: top} = event;
@@ -157,15 +186,19 @@ const setUp = () => {
   });
 
   document.querySelector('#controls').addEventListener('click', ({target}) => {
-    const button = target.closest('button[id]');
+    const button = target.closest('[id].button');
     if (!button) {
       return;
     }
     switch (button.id) {
-      case 'home':
-        paintStartState();
+      case 'menu': {
+        const shape = target.closest('.shape');
+        if (shape) {
+          const index = shape.dataset.index;
+          paintStartState(shapes[index]);
+        }
         break;
-
+      }
       case 'start':
         button.parentElement.classList.add('running');
         interval = setInterval(getIterator(getStateFromDOM(), updateDOM), 100);

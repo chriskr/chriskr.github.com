@@ -348,6 +348,39 @@ if (!Array.prototype.flatMap) {
 }
 'use strict';
 
+var shapes = [{
+  name: '',
+  width: 5,
+  height: 5,
+  data: [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1]
+}, {
+  name: '',
+  width: 8,
+  height: 6,
+  data: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0]
+}, {
+  name: 'Acorn',
+  width: 7,
+  height: 3,
+  data: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1]
+}, {
+  name: 'The R-Pentomino',
+  width: 3,
+  height: 3,
+  data: [0, 1, 1, 1, 1, 0, 0, 1, 0]
+}, {
+  name: '',
+  width: 39,
+  height: 1,
+  data: [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1]
+}, {
+  name: 'Gosper Glider Gun',
+  width: 36,
+  height: 9,
+  data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}];
+'use strict';
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -358,19 +391,35 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var X = 9;
 
-var createElementForCell = function createElementForCell(_ref) {
-  var _ref2 = _slicedToArray(_ref, 2),
-      x = _ref2[0],
-      y = _ref2[1];
+var translate = function translate(matrix, left, top) {
+  return matrix.map(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        x = _ref2[0],
+        y = _ref2[1];
 
-  if (x < -X || window.innerWidth < x || y < -X || window.innerHeight < y) {
-    return null;
-  }
-  var span = document.createElement('span');
-  span.classList.add('cell');
-  span.style.left = x + 'px';
-  span.style.top = y + 'px';
-  return span;
+    return [left + x, top + y];
+  });
+};
+
+var scale = function scale(_ref3) {
+  var _ref4 = _slicedToArray(_ref3, 2),
+      x = _ref4[0],
+      y = _ref4[1];
+
+  return [x * X, y * X];
+};
+
+var isOnScreen = function isOnScreen(_ref5) {
+  var _ref6 = _slicedToArray(_ref5, 2),
+      x = _ref6[0],
+      y = _ref6[1];
+
+  return -X < x && x < window.innerWidth && -X < y && y < window.innerHeight;
+};
+
+var snap = function snap(x) {
+  var s = x / X | 0;
+  return s * X;
 };
 
 var addStyle = function addStyle() {
@@ -378,52 +427,97 @@ var addStyle = function addStyle() {
   sheet.textContent = '.cell {width: ' + X + 'px; height: ' + X + 'px;}';
 };
 
-var startState = [[0, 0], [1, 0], [2, 0], [4, 0], [0, 1], [3, 2], [4, 2], [1, 3], [2, 3], [4, 3], [0, 4], [2, 4], [4, 4]];
+var getPosFromIndexAndWidth = function getPosFromIndexAndWidth(width, index) {
+  var x = index % width;
+  var y = (index - x) / width;
+  return [x, y];
+};
 
-var translate = function translate(matrix, left, top) {
-  return matrix.map(function (_ref3) {
-    var _ref4 = _slicedToArray(_ref3, 2),
-        x = _ref4[0],
-        y = _ref4[1];
+var getCellsFromShape = function getCellsFromShape(_ref7) {
+  var data = _ref7.data,
+      width = _ref7.width,
+      height = _ref7.height;
+  return data.map(function (bit, index) {
+    return bit === 0 ? null : getPosFromIndexAndWidth(width, index);
+  }).filter(Boolean);
+};
 
-    return [left + x, top + y];
+var shapeToCanvas = function shapeToCanvas(_ref8, scale) {
+  var data = _ref8.data,
+      width = _ref8.width,
+      height = _ref8.height;
+
+  var canvas = document.createElement('canvas');
+  canvas.width = width * scale;
+  canvas.height = height * scale;
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'white';
+  data.forEach(function (bit, index) {
+    if (bit == 1) {
+      var _getPosFromIndexAndWi = getPosFromIndexAndWidth(width, index),
+          _getPosFromIndexAndWi2 = _slicedToArray(_getPosFromIndexAndWi, 2),
+          x = _getPosFromIndexAndWi2[0],
+          y = _getPosFromIndexAndWi2[1];
+
+      ctx.rect(x * scale, y * scale, scale, scale);
+    }
+  });
+  ctx.fill();
+  return canvas;
+};
+
+var addShapes = function addShapes() {
+  var shapeList = document.querySelector('#shape-list');
+  shapes.forEach(function (shape, index) {
+    var canvas = shapeToCanvas(shape, 4);
+    var li = document.createElement('li');
+    li.title = shape.name;
+    li.classList.add('shape');
+    li.dataset.index = String(index);
+    li.appendChild(canvas);
+    shapeList.appendChild(li);
   });
 };
 
+var createElementForCell = function createElementForCell(_ref9) {
+  var _ref10 = _slicedToArray(_ref9, 2),
+      x = _ref10[0],
+      y = _ref10[1];
+
+  var span = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.createElement('span');
+
+  span.classList.add('cell');
+  span.style.left = x + 'px';
+  span.style.top = y + 'px';
+  return span;
+};
+
 var paintStartState = function paintStartState() {
+  var shape = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : shapes[0];
+
   var wikiBox = document.querySelector('a').getBoundingClientRect();
-  var buttonBox = document.querySelector('button').getBoundingClientRect();
-  var top = ((wikiBox.bottom + buttonBox.top) / 2 - 5 * X / 2) / X | 0;
-  var left = (window.innerWidth / 2 - 5 * X / 2) / X | 0;
-  updateDOM(new Cells(translate(startState, left, top)));
+  var buttonBox = document.querySelector('#controls').getBoundingClientRect();
+  var top = ((wikiBox.bottom + buttonBox.top) / 2 - shape.height * X / 2) / X | 0;
+  var left = (window.innerWidth / 2 - shape.width * X / 2) / X | 0;
+  updateDOM(new Cells(translate(getCellsFromShape(shape), left, top)));
 };
 
 var getStateFromDOM = function getStateFromDOM() {
-  return new Cells([].concat(_toConsumableArray(document.querySelector('#container').children)).map(function (_ref5) {
-    var _ref5$style = _ref5.style,
-        top = _ref5$style.top,
-        left = _ref5$style.left;
+  return new Cells([].concat(_toConsumableArray(document.querySelector('#container').children)).map(function (_ref11) {
+    var _ref11$style = _ref11.style,
+        top = _ref11$style.top,
+        left = _ref11$style.left;
     return [Number.parseInt(left) / X | 0, Number.parseInt(top) / X | 0];
   }));
 };
 
 var updateDOM = function updateDOM(liveCells) {
   var container = document.querySelector('#container');
+  var children = [].concat(_toConsumableArray(container.children));
   container.textContent = '';
-  liveCells.getAll().map(function (_ref6) {
-    var _ref7 = _slicedToArray(_ref6, 2),
-        x = _ref7[0],
-        y = _ref7[1];
-
-    return createElementForCell([x * X, y * X]);
-  }).filter(Boolean).forEach(function (ele) {
-    return container.appendChild(ele);
+  liveCells.getAll().map(scale).filter(isOnScreen).forEach(function (pos) {
+    return container.appendChild(createElementForCell(pos, children.pop()));
   });
-};
-
-var snap = function snap(x) {
-  var s = x / X | 0;
-  return s * X;
 };
 
 var Cells = function () {
@@ -442,10 +536,10 @@ var Cells = function () {
 
   _createClass(Cells, [{
     key: 'add',
-    value: function add(_ref8) {
-      var _ref9 = _slicedToArray(_ref8, 2),
-          x = _ref9[0],
-          y = _ref9[1];
+    value: function add(_ref12) {
+      var _ref13 = _slicedToArray(_ref12, 2),
+          x = _ref13[0],
+          y = _ref13[1];
 
       if (!this._x.has(x)) {
         this._x.set(x, new Set());
@@ -454,20 +548,20 @@ var Cells = function () {
     }
   }, {
     key: 'has',
-    value: function has(_ref10) {
-      var _ref11 = _slicedToArray(_ref10, 2),
-          x = _ref11[0],
-          y = _ref11[1];
+    value: function has(_ref14) {
+      var _ref15 = _slicedToArray(_ref14, 2),
+          x = _ref15[0],
+          y = _ref15[1];
 
       return this._x.has(x) && this._x.get(x).has(y);
     }
   }, {
     key: 'getAll',
     value: function getAll() {
-      return [].concat(_toConsumableArray(this._x.entries())).flatMap(function (_ref12) {
-        var _ref13 = _slicedToArray(_ref12, 2),
-            x = _ref13[0],
-            ySet = _ref13[1];
+      return [].concat(_toConsumableArray(this._x.entries())).flatMap(function (_ref16) {
+        var _ref17 = _slicedToArray(_ref16, 2),
+            x = _ref17[0],
+            ySet = _ref17[1];
 
         return [].concat(_toConsumableArray(ySet)).map(function (y) {
           return [x, y];
@@ -479,10 +573,10 @@ var Cells = function () {
   return Cells;
 }();
 
-var getNeighbours = function getNeighbours(_ref14) {
-  var _ref15 = _slicedToArray(_ref14, 2),
-      x = _ref15[0],
-      y = _ref15[1];
+var getNeighbours = function getNeighbours(_ref18) {
+  var _ref19 = _slicedToArray(_ref18, 2),
+      x = _ref19[0],
+      y = _ref19[1];
 
   return [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1], [x - 1, y], [x + 1, y], [x - 1, y + 1], [x, y + 1], [x + 1, y + 1]];
 };
@@ -536,6 +630,7 @@ var setUp = function setUp() {
   var interval = null;
 
   addStyle();
+  addShapes();
   paintStartState();
 
   document.addEventListener('click', function (event) {
@@ -545,20 +640,17 @@ var setUp = function setUp() {
     var cell = event.target.closest('.cell');
     if (cell) {
       cell.remove();
-    } else if (!event.target.closest('button, a, h1')) {
+    } else if (!event.target.closest('.button, a, h1')) {
       var x = event.clientX,
           y = event.clientY;
 
-      var ele = createElementForCell([snap(x), snap(y)]);
-      if (ele) {
-        document.querySelector('#container').appendChild(ele);
-      }
+      document.querySelector('#container').appendChild(createElementForCell([snap(x), snap(y)]));
     }
   });
 
   document.addEventListener('mousemove', function (event) {
     var style = document.querySelector('.indicator').style;
-    if (interval || event.target.closest('button, a, h1')) {
+    if (interval || event.target.closest('.button, a, h1')) {
       style.opacity = 0;
     } else {
       var left = event.clientX,
@@ -570,18 +662,23 @@ var setUp = function setUp() {
     }
   });
 
-  document.querySelector('#controls').addEventListener('click', function (_ref16) {
-    var target = _ref16.target;
+  document.querySelector('#controls').addEventListener('click', function (_ref20) {
+    var target = _ref20.target;
 
-    var button = target.closest('button[id]');
+    var button = target.closest('[id].button');
     if (!button) {
       return;
     }
     switch (button.id) {
-      case 'home':
-        paintStartState();
-        break;
-
+      case 'menu':
+        {
+          var shape = target.closest('.shape');
+          if (shape) {
+            var index = shape.dataset.index;
+            paintStartState(shapes[index]);
+          }
+          break;
+        }
       case 'start':
         button.parentElement.classList.add('running');
         interval = setInterval(getIterator(getStateFromDOM(), updateDOM), 100);
