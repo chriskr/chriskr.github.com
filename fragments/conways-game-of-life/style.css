@@ -115,17 +115,16 @@ a:focus {
   left: -232px;
   list-style: none;
   margin: 0;
-  padding: 8px 8px 50px 8px;
+  padding: 8px 8px 56px 8px;
   position: absolute;
+  z-index: 1;
 }
 
 .shape {
-  align-items: center;
   border-left: 1px solid hsla(0, 0%, 100%, 0.3);
-  display: flex;
   height: 48px;
-  justify-content: center;
-  padding: 8px 32px;
+  line-height: 48px;
+  padding: 0 32px;
 }
 
 .shape:last-child {
@@ -134,4 +133,8 @@ a:focus {
 
 #menu:hover #shape-list {
   display: flex;
+}
+
+.shape canvas {
+  vertical-align: middle;
 }
