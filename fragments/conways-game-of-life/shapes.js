@@ -25,7 +25,7 @@ const shapes = [
     ],
   },
   {
-    name: 'Acorn',
+    name: 'acorn',
     width: 7,
     height: 3,
     data: [
@@ -35,7 +35,7 @@ const shapes = [
     ],
   },
   {
-    name: 'The R-Pentomino',
+    name: 'the r-pentomino',
     width: 3,
     height: 3,
     data: [
@@ -53,7 +53,7 @@ const shapes = [
     ],
   },
   {
-    name: 'Gosper Glider Gun',
+    name: 'gosper glider gun',
     width: 36,
     height: 9,
     data: [
