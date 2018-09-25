@@ -468,10 +468,18 @@ var shapeToCanvas = function shapeToCanvas(_ref8, scale) {
 
 var addShapes = function addShapes() {
   var shapeList = document.querySelector('#shape-list');
+  var scale = 4;
+  var maxHeight = shapes.reduce(function (max, _ref9) {
+    var height = _ref9.height;
+    return Math.max(max, height);
+  }, 0) * scale;
   shapes.forEach(function (shape, index) {
-    var canvas = shapeToCanvas(shape, 4);
+    var canvas = shapeToCanvas(shape, scale);
+    var padding = (maxHeight - scale * shape.height) / 2;
+    canvas.style.paddingTop = padding + 'px';
+    canvas.style.paddingBottom = padding + 'px';
     var li = document.createElement('li');
-    li.title = shape.name;
+    li.dataset.legend = shape.name;
     li.classList.add('shape');
     li.dataset.index = String(index);
     li.appendChild(canvas);
@@ -479,10 +487,10 @@ var addShapes = function addShapes() {
   });
 };
 
-var createElementForCell = function createElementForCell(_ref9) {
-  var _ref10 = _slicedToArray(_ref9, 2),
-      x = _ref10[0],
-      y = _ref10[1];
+var createElementForCell = function createElementForCell(_ref10) {
+  var _ref11 = _slicedToArray(_ref10, 2),
+      x = _ref11[0],
+      y = _ref11[1];
 
   var span = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.createElement('span');
 
@@ -503,10 +511,10 @@ var paintStartState = function paintStartState() {
 };
 
 var getStateFromDOM = function getStateFromDOM() {
-  return new Cells([].concat(_toConsumableArray(document.querySelector('#container').children)).map(function (_ref11) {
-    var _ref11$style = _ref11.style,
-        top = _ref11$style.top,
-        left = _ref11$style.left;
+  return new Cells([].concat(_toConsumableArray(document.querySelector('#container').children)).map(function (_ref12) {
+    var _ref12$style = _ref12.style,
+        top = _ref12$style.top,
+        left = _ref12$style.left;
     return [Number.parseInt(left) / X | 0, Number.parseInt(top) / X | 0];
   }));
 };
@@ -536,10 +544,10 @@ var Cells = function () {
 
   _createClass(Cells, [{
     key: 'add',
-    value: function add(_ref12) {
-      var _ref13 = _slicedToArray(_ref12, 2),
-          x = _ref13[0],
-          y = _ref13[1];
+    value: function add(_ref13) {
+      var _ref14 = _slicedToArray(_ref13, 2),
+          x = _ref14[0],
+          y = _ref14[1];
 
       if (!this._x.has(x)) {
         this._x.set(x, new Set());
@@ -548,20 +556,20 @@ var Cells = function () {
     }
   }, {
     key: 'has',
-    value: function has(_ref14) {
-      var _ref15 = _slicedToArray(_ref14, 2),
-          x = _ref15[0],
-          y = _ref15[1];
+    value: function has(_ref15) {
+      var _ref16 = _slicedToArray(_ref15, 2),
+          x = _ref16[0],
+          y = _ref16[1];
 
       return this._x.has(x) && this._x.get(x).has(y);
     }
   }, {
     key: 'getAll',
     value: function getAll() {
-      return [].concat(_toConsumableArray(this._x.entries())).flatMap(function (_ref16) {
-        var _ref17 = _slicedToArray(_ref16, 2),
-            x = _ref17[0],
-            ySet = _ref17[1];
+      return [].concat(_toConsumableArray(this._x.entries())).flatMap(function (_ref17) {
+        var _ref18 = _slicedToArray(_ref17, 2),
+            x = _ref18[0],
+            ySet = _ref18[1];
 
         return [].concat(_toConsumableArray(ySet)).map(function (y) {
           return [x, y];
@@ -573,10 +581,10 @@ var Cells = function () {
   return Cells;
 }();
 
-var getNeighbours = function getNeighbours(_ref18) {
-  var _ref19 = _slicedToArray(_ref18, 2),
-      x = _ref19[0],
-      y = _ref19[1];
+var getNeighbours = function getNeighbours(_ref19) {
+  var _ref20 = _slicedToArray(_ref19, 2),
+      x = _ref20[0],
+      y = _ref20[1];
 
   return [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1], [x - 1, y], [x + 1, y], [x - 1, y + 1], [x, y + 1], [x + 1, y + 1]];
 };
@@ -662,8 +670,8 @@ var setUp = function setUp() {
     }
   });
 
-  document.querySelector('#controls').addEventListener('click', function (_ref20) {
-    var target = _ref20.target;
+  document.querySelector('#controls').addEventListener('click', function (_ref21) {
+    var target = _ref21.target;
 
     var button = target.closest('[id].button');
     if (!button) {

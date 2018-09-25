@@ -45,10 +45,15 @@ const shapeToCanvas = ({data, width, height}, scale) => {
 
 const addShapes = () => {
   const shapeList = document.querySelector('#shape-list');
+  const scale = 4;
+  const maxHeight = shapes.reduce((max, {height}) => Math.max(max, height), 0) * scale;
   shapes.forEach((shape, index) => {
-    const canvas = shapeToCanvas(shape, 4);
+    const canvas = shapeToCanvas(shape, scale);
+    const padding = (maxHeight - scale * shape.height) / 2;
+    canvas.style.paddingTop = `${padding}px`;
+    canvas.style.paddingBottom = `${padding}px`;
     const li = document.createElement('li');
-    li.title = shape.name;
+    li.dataset.legend = shape.name;
     li.classList.add('shape');
     li.dataset.index = String(index);
     li.appendChild(canvas);
