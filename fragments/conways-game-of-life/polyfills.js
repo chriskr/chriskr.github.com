@@ -139,6 +139,17 @@ if (!new Map().entries && new Map().forEach) {
   console.info('Patched entries for Map');
 }
 
+if (!new Map().keys && new Map().forEach) {
+  Map.prototype.keys = function() {
+    var list = [];
+    this.forEach(function(value, key) {
+      list.push(key);
+    });
+    return new GeneratorPolyfill(list);
+  }
+  console.info('Patched keys for Map');
+}
+
 if (new Map([[1, 1]]).size === 0) {
   (function(MapClass) {
     // eslint-disable-next-line

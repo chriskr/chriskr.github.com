@@ -100,19 +100,28 @@ class Cells {
 
   add ([x, y]) {
     if (!this._x.has(x)) {
-      this._x.set(x, new Set());
+      this._x.set(x, new Map());
     }
-    this._x.get(x).add(y);
+    const column = this._x.get(x);
+    if (!column.has(y)) {
+      column.set(y, 0);
+    }
+    column.set(y, column.get(y) + 1);
   }
 
   has ([x, y]) {
-    return this._x.has(x) && this._x.get(x).has(y);
+    return this.get([x, y]) > 0;
+  }
+
+  get ([x, y]) {
+    const column = this._x.get(x);
+    return column ? column.get(y) : 0;
   }
 
   getAll () {
     return [
       ...this._x.entries()
-    ].flatMap(([x, ySet]) => [...ySet].map(y => [x, y]));
+    ].flatMap(([x, yMap]) => [...yMap.keys()].map(y => [x, y]));
   }
 }
 
@@ -122,34 +131,19 @@ const getNeighbours = ([x, y]) => [
   [x - 1, y + 1], [x, y + 1], [x + 1, y + 1],
 ];
 
-const getNeighboursWithFilter = (pos, filter) => getNeighbours(pos).filter(filter);
-
-const getLiveNeighboursCount = (liveCells, pos) =>
-  getNeighboursWithFilter(pos, neighbour => liveCells.has(neighbour)).length;
-
-const getDeadNeighbours = (liveCells, pos) =>
-  getNeighboursWithFilter(pos, neighbour => !liveCells.has(neighbour));
-
 const iterate = (liveCells) => {
   // Any live cell with fewer than two live neighbors dies, as if by under population.
   // Any live cell with two or three live neighbors lives on to the next generation.
   // Any live cell with more than three live neighbors dies, as if by overpopulation.
   // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
-  //const children = [...document.querySelector('#container').children];
-  const newLiveCells = new Cells();
-  liveCells.getAll().forEach(pos => {
-    const liveNeighboursCount = getLiveNeighboursCount(liveCells, pos);
-    if (1 < liveNeighboursCount && liveNeighboursCount < 4) {
-      newLiveCells.add(pos);
-    }
-    getDeadNeighbours(liveCells, pos).forEach(deadPos => {
-      const liveNeighboursCount = getLiveNeighboursCount(liveCells, deadPos);
-      if (liveNeighboursCount === 3) {
-        newLiveCells.add(deadPos);
-      }
-    });
-  });
-  return newLiveCells;
+  const neighboursCounts = new Cells();
+  const addNeighbourCount = neighboursPos => neighboursCounts.add(neighboursPos);
+  const countNeighbours = pos => getNeighbours(pos).forEach(addNeighbourCount);
+  liveCells.getAll().forEach(countNeighbours);
+  return new Cells(neighboursCounts.getAll().filter(pos => {
+    const liveCount = neighboursCounts.get(pos);
+    return liveCount === 3 || (liveCells.has(pos) && liveCount === 2);
+  }));
 };
 
 const getIterator = (currentState, callabck) => () => {

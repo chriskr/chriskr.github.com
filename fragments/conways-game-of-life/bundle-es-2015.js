@@ -139,6 +139,17 @@ if (!new Map().entries && new Map().forEach) {
   console.info('Patched entries for Map');
 }
 
+if (!new Map().keys && new Map().forEach) {
+  Map.prototype.keys = function () {
+    var list = [];
+    this.forEach(function (value, key) {
+      list.push(key);
+    });
+    return new GeneratorPolyfill(list);
+  };
+  console.info('Patched keys for Map');
+}
+
 if (new Map([[1, 1]]).size === 0) {
   (function (MapClass) {
     // eslint-disable-next-line
@@ -550,9 +561,13 @@ var Cells = function () {
           y = _ref14[1];
 
       if (!this._x.has(x)) {
-        this._x.set(x, new Set());
+        this._x.set(x, new Map());
       }
-      this._x.get(x).add(y);
+      var column = this._x.get(x);
+      if (!column.has(y)) {
+        column.set(y, 0);
+      }
+      column.set(y, column.get(y) + 1);
     }
   }, {
     key: 'has',
@@ -561,17 +576,27 @@ var Cells = function () {
           x = _ref16[0],
           y = _ref16[1];
 
-      return this._x.has(x) && this._x.get(x).has(y);
+      return this.get([x, y]) > 0;
+    }
+  }, {
+    key: 'get',
+    value: function get(_ref17) {
+      var _ref18 = _slicedToArray(_ref17, 2),
+          x = _ref18[0],
+          y = _ref18[1];
+
+      var column = this._x.get(x);
+      return column ? column.get(y) : 0;
     }
   }, {
     key: 'getAll',
     value: function getAll() {
-      return [].concat(_toConsumableArray(this._x.entries())).flatMap(function (_ref17) {
-        var _ref18 = _slicedToArray(_ref17, 2),
-            x = _ref18[0],
-            ySet = _ref18[1];
+      return [].concat(_toConsumableArray(this._x.entries())).flatMap(function (_ref19) {
+        var _ref20 = _slicedToArray(_ref19, 2),
+            x = _ref20[0],
+            yMap = _ref20[1];
 
-        return [].concat(_toConsumableArray(ySet)).map(function (y) {
+        return [].concat(_toConsumableArray(yMap.keys())).map(function (y) {
           return [x, y];
         });
       });
@@ -581,28 +606,12 @@ var Cells = function () {
   return Cells;
 }();
 
-var getNeighbours = function getNeighbours(_ref19) {
-  var _ref20 = _slicedToArray(_ref19, 2),
-      x = _ref20[0],
-      y = _ref20[1];
+var getNeighbours = function getNeighbours(_ref21) {
+  var _ref22 = _slicedToArray(_ref21, 2),
+      x = _ref22[0],
+      y = _ref22[1];
 
   return [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1], [x - 1, y], [x + 1, y], [x - 1, y + 1], [x, y + 1], [x + 1, y + 1]];
-};
-
-var getNeighboursWithFilter = function getNeighboursWithFilter(pos, filter) {
-  return getNeighbours(pos).filter(filter);
-};
-
-var getLiveNeighboursCount = function getLiveNeighboursCount(liveCells, pos) {
-  return getNeighboursWithFilter(pos, function (neighbour) {
-    return liveCells.has(neighbour);
-  }).length;
-};
-
-var getDeadNeighbours = function getDeadNeighbours(liveCells, pos) {
-  return getNeighboursWithFilter(pos, function (neighbour) {
-    return !liveCells.has(neighbour);
-  });
 };
 
 var iterate = function iterate(liveCells) {
@@ -610,21 +619,18 @@ var iterate = function iterate(liveCells) {
   // Any live cell with two or three live neighbors lives on to the next generation.
   // Any live cell with more than three live neighbors dies, as if by overpopulation.
   // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
-  //const children = [...document.querySelector('#container').children];
-  var newLiveCells = new Cells();
-  liveCells.getAll().forEach(function (pos) {
-    var liveNeighboursCount = getLiveNeighboursCount(liveCells, pos);
-    if (1 < liveNeighboursCount && liveNeighboursCount < 4) {
-      newLiveCells.add(pos);
-    }
-    getDeadNeighbours(liveCells, pos).forEach(function (deadPos) {
-      var liveNeighboursCount = getLiveNeighboursCount(liveCells, deadPos);
-      if (liveNeighboursCount === 3) {
-        newLiveCells.add(deadPos);
-      }
-    });
-  });
-  return newLiveCells;
+  var neighboursCounts = new Cells();
+  var addNeighbourCount = function addNeighbourCount(neighboursPos) {
+    return neighboursCounts.add(neighboursPos);
+  };
+  var countNeighbours = function countNeighbours(pos) {
+    return getNeighbours(pos).forEach(addNeighbourCount);
+  };
+  liveCells.getAll().forEach(countNeighbours);
+  return new Cells(neighboursCounts.getAll().filter(function (pos) {
+    var liveCount = neighboursCounts.get(pos);
+    return liveCount === 3 || liveCells.has(pos) && liveCount === 2;
+  }));
 };
 
 var getIterator = function getIterator(currentState, callabck) {
@@ -670,8 +676,8 @@ var setUp = function setUp() {
     }
   });
 
-  document.querySelector('#controls').addEventListener('click', function (_ref21) {
-    var target = _ref21.target;
+  document.querySelector('#controls').addEventListener('click', function (_ref23) {
+    var target = _ref23.target;
 
     var button = target.closest('[id].button');
     if (!button) {
