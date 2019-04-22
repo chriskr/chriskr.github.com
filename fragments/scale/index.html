@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<title>test</title>
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+<style>
+  html,
+  body {
+    font: menu;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+  .button {
+    cursor: pointer;
+  }
+  #center-content {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+  }
+  #container {
+    background-color: hsl(0, 0%, 95%);
+    bottom: 50px;
+    left: 50px;
+    overflow: hidden;
+    position: absolute;
+    right: 50px;
+    top: 50px;
+  }
+  #inner-container {
+    transform-origin: 0 0;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  td {
+    background-color: hsl(210, 100%, 80%);
+    border: 1px solid hsl(0, 0%, 40%);
+  }
+  td:nth-child(even) {
+    background-color: hsl(210, 100%, 90%);
+    border: 1px solid hsl(0, 0%, 40%);
+  }
+  tr:nth-child(even) td {
+    background-color: hsl(210, 100%, 90%);
+  }
+  tr:nth-child(even) td:nth-child(even) {
+    background-color: hsl(210, 100%, 80%);
+  }
+  td span {
+    align-items: center;
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    width: 160px;
+  }
+</style>
+<script src="scale.js"></script>
+<span class="button" id="center-content">
+  <i class="material-icons">
+    center_focus_strong
+  </i>
+</span>
+<div id="container">
+  <div id="inner-container"></div>
+</div>
