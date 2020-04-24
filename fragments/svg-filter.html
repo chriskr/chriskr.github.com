@@ -1,115 +1,112 @@
-<!doctype html>
-  <title>svg filter</title>
-  <style>
-    html {
-      font: menu;
-    }
+<!DOCTYPE html>
+<title>svg filter</title>
+<style>
+  html {
+    font: menu;
+  }
 
-    img {
-      width: 400px;
-      filter: url(#filter-sample);
-    }
+  img {
+    width: 400px;
+    filter: url(#filter-sample);
+  }
 
-    .row {
-      display: flex;
-      align-items: center;
-    }
+  .row {
+    display: flex;
+    align-items: center;
+  }
 
-    .row label {
-      min-width: 80px;
-    }
-  </style>
-  <p>
-    drag and drop any image
-  </p>
-  <p>
-    <img id="target" />
-  </p>
+  .row label {
+    min-width: 80px;
+  }
+</style>
+<p>
+  drag and drop any image
+</p>
+<p>
+  <img id="target" />
+</p>
 
-  <div class="row">
-    <label>gradient</label>
-    <input type="range" id="gradient" min="0" max="150" value 100 />
-    <span id="gradient-value">100</span>
-  </div>
-  <div class="row">
-    <label>red</label>
-    <input type="range" id="red" min="0" max="255" value="0" />
-    <span id="red-value">0</span>
-  </div>
-  <div class="row">
-    <label>green</label>
-    <input type="range" id="green" min="0" max="255" value="0" />
-    <span id="green-value">0</span>
-  </div>
-  <div class="row">
-    <label>blue</label>
-    <input type="range" id="blue" min="0" max="255" value="0" />
-    <span id="blue-value">0</span>
-  </div>
+<div class="row">
+  <label>gradient</label>
+  <input type="range" id="gradient" min="0" max="150" value 100 />
+  <span id="gradient-value">100</span>
+</div>
+<div class="row">
+  <label>red</label>
+  <input type="range" id="red" min="0" max="255" value="0" />
+  <span id="red-value">0</span>
+</div>
+<div class="row">
+  <label>green</label>
+  <input type="range" id="green" min="0" max="255" value="0" />
+  <span id="green-value">0</span>
+</div>
+<div class="row">
+  <label>blue</label>
+  <input type="range" id="blue" min="0" max="255" value="0" />
+  <span id="blue-value">0</span>
+</div>
 
-  <svg id="filter-container">
-    <filter id="filter-sample">
-      <feColorMatrix
-        type="matrix"
-        values="
+<svg id="filter-container">
+  <filter id="filter-sample">
+    <feColorMatrix
+      type="matrix"
+      values="
       0.299 0.587 0.114 0 0
       0.299 0.587 0.114 0 0
       0.299 0.587 0.114 0 0
       0 0 0 1 0
       "
-      />
-    </filter>
-  </svg>
-  <script>
-    let gradient = 1;
-    const grayValues = [0.2989, 0.587, 0.114];
-    const colors = {
-      red: 0,
-      green: 0,
-      blue: 0,
-    };
+    />
+  </filter>
+</svg>
+<script>
+  let gradient = 1;
+  const grayValues = [0.2989, 0.587, 0.114];
+  const colors = {
+    red: 0,
+    green: 0,
+    blue: 0,
+  };
 
-    const updateMatrix = () => {
-      const grayScale = grayValues.map((v) => v * gradient);
-      const r = [...grayScale, colors.red, 0];
-      const g = [...grayScale, colors.green, 0];
-      const b = [...grayScale, colors.blue, 0];
-      const a = [0, 0, 0, 1, 0];
-      const matrix = [...r, ...g, ...b, ...a]
-        .map((n) => n.toFixed(3))
-        .join(" ");
-      document
-        .querySelector("#filter-sample feColorMatrix")
-        .setAttribute("values", matrix);
-    };
+  const updateMatrix = () => {
+    const grayScale = grayValues.map((v) => v * gradient);
+    const r = [...grayScale, colors.red, 0];
+    const g = [...grayScale, colors.green, 0];
+    const b = [...grayScale, colors.blue, 0];
+    const a = [0, 0, 0, 1, 0];
+    const matrix = [...r, ...g, ...b, ...a].map((n) => n.toFixed(3)).join(" ");
+    document
+      .querySelector("#filter-sample feColorMatrix")
+      .setAttribute("values", matrix);
+  };
 
-    document.addEventListener("input", ({ target }) => {
-      switch (target.id) {
-        case "gradient": {
-          document.querySelector("#gradient-value").textContent = target.value;
-          gradient = Number.parseInt(target.value) / 100;
-          break;
-        }
-        case "red":
-        case "green":
-        case "blue": {
-          document.querySelector(`#${target.id}-value`).textContent =
-            target.value;
-          colors[target.id] = Number.parseInt(target.value) / 255;
-          break;
-        }
+  document.addEventListener("input", ({ target }) => {
+    switch (target.id) {
+      case "gradient": {
+        document.querySelector("#gradient-value").textContent = target.value;
+        gradient = Number.parseInt(target.value) / 100;
+        break;
       }
-      updateMatrix();
-    });
+      case "red":
+      case "green":
+      case "blue": {
+        document.querySelector(`#${target.id}-value`).textContent =
+          target.value;
+        colors[target.id] = Number.parseInt(target.value) / 255;
+        break;
+      }
+    }
+    updateMatrix();
+  });
 
-    ["dragenter", "dragover", "dragleave"].forEach((name) => {
-      document.addEventListener(name, (event) => event.preventDefault());
-    });
+  ["dragenter", "dragover", "dragleave"].forEach((name) => {
+    document.addEventListener(name, (event) => event.preventDefault());
+  });
 
-    document.addEventListener("drop", (event) => {
-      event.preventDefault();
-      const objectURL = URL.createObjectURL(event.dataTransfer.files[0]);
-      document.querySelector("#target").src = objectURL;
-    });
-  </script>
-</doctype>
+  document.addEventListener("drop", (event) => {
+    event.preventDefault();
+    const objectURL = URL.createObjectURL(event.dataTransfer.files[0]);
+    document.querySelector("#target").src = objectURL;
+  });
+</script>
