@@ -108,11 +108,7 @@
     });
 
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((name) => {
-      console.log(name);
-      document.addEventListener(name, (event) => {
-        event.preventDefault();
-      });
-      //document.addEventListener(name, event => event.preventDefault())
+      document.addEventListener(name, (event) => event.preventDefault());
     });
 
     document.addEventListener('drop', (event) => {
