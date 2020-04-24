@@ -71,9 +71,9 @@
 
     const updateMatrix = () => {
       const grayScale = grayValues.map((v) => v * gradient);
-      const r = [...grayScale, color.red, 0];
-      const g = [...grayScale, color.green, 0];
-      const b = [...grayScale, color.blue, 0];
+      const r = [...grayScale, colors.red, 0];
+      const g = [...grayScale, colors.green, 0];
+      const b = [...grayScale, colors.blue, 0];
       const a = [0, 0, 0, 1, 0];
       const matrix = [...r, ...g, ...b, ...a]
         .map((n) => n.toFixed(3))
@@ -95,7 +95,7 @@
         case "blue": {
           document.querySelector(`#${target.id}-value`).textContent =
             target.value;
-          color[target.id] = Number.parseInt(target.value) / 255;
+          colors[target.id] = Number.parseInt(target.value) / 255;
           break;
         }
       }
