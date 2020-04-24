@@ -1,0 +1,119 @@
+<doctype html>
+  <title>svg filter</title>
+  <style>
+    html {
+      font: menu;
+    }
+
+    img {
+      width: 400px;
+      filter: url(#filter-sample);
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+    }
+
+    label input {
+      margin-left: 12px;
+      margin-right: 12px;
+    }
+  </style>
+  <div>
+    <img id=target
+    src=https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flower_poster_2.jpg/1200px-Flower_poster_2.jpg>
+  </div>
+
+  <div>
+    <label>
+      gradient <input type="range" id="gradient" min="0" max="150" value 100 />
+      <span id="gradient-value">100</span></label
+    >
+    <label>
+      red <input type="range" id="red" min="0" max="255" value="0" />
+      <span id="red-value">0</span></label
+    >
+    <label>
+      green <input type="range" id="green" min="0" max="255" value="0" />
+      <span id="green-value">0</span></label
+    >
+    <label>
+      blue <input type="range" id="blue" min="0" max="255" value="0" />
+      <span id="blue-value">0</span></label
+    >
+  </div>
+  <svg id="filter-container">
+    <filter id="filter-sample">
+      <feColorMatrix
+        type="matrix"
+        values="
+      0.299 0.587 0.114 0 0
+      0.299 0.587 0.114 0 0
+      0.299 0.587 0.114 0 0
+      0 0 0 1 0
+      "
+      />
+    </filter>
+  </svg>
+  <script>
+    const color = [0, 0, 0];
+    let gradient = 1;
+    const grayValues = [0.2989, 0.587, 0.114];
+    const map = {
+      red: 0,
+      green: 1,
+      blue: 2,
+    };
+
+    const setGradient = (percent) => {
+      gradient = percent;
+      update;
+    };
+
+    const updateMatrix = () => {
+      const r = [...grayValues.map((v) => v * gradient), color[0], 0];
+      const g = [...grayValues.map((v) => v * gradient), color[1], 0];
+      const b = [...grayValues.map((v) => v * gradient), color[2], 0];
+      const a = [0, 0, 0, 1, 0];
+      const matrix = [...r, ...g, ...b, ...a]
+        .map((n) => n.toFixed(3))
+        .join(' ');
+      document
+        .querySelector('#filter-sample feColorMatrix')
+        .setAttribute('values', matrix);
+    };
+
+    document.addEventListener('input', ({ target }) => {
+      switch (target.id) {
+        case 'gradient': {
+          document.querySelector('#gradient-value').textContent = target.value;
+          gradient = Number.parseInt(target.value) / 100;
+          break;
+        }
+        case 'red':
+        case 'green':
+        case 'blue': {
+          document.querySelector(`#${target.id}-value`).textContent =
+            target.value;
+          color[map[target.id]] = Number.parseInt(target.value) / 255;
+          break;
+        }
+      }
+      updateMatrix();
+    });
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((name) => {
+      console.log(name);
+      document.addEventListener(name, (event) => {
+        event.preventDefault();
+      });
+      //document.addEventListener(name, event => event.preventDefault())
+    });
+
+    document.addEventListener('drop', (event) => {
+      const objectURL = URL.createObjectURL(event.dataTransfer.files[0]);
+      document.querySelector('#target').src = objectURL;
+    });
+  </script>
+</doctype>
