@@ -61,59 +61,55 @@
     </filter>
   </svg>
   <script>
-    const color = [0, 0, 0];
     let gradient = 1;
     const grayValues = [0.2989, 0.587, 0.114];
-    const map = {
+    const colors = {
       red: 0,
-      green: 1,
-      blue: 2,
-    };
-
-    const setGradient = (percent) => {
-      gradient = percent;
-      update;
+      green: 0,
+      blue: 0,
     };
 
     const updateMatrix = () => {
-      const r = [...grayValues.map((v) => v * gradient), color[0], 0];
-      const g = [...grayValues.map((v) => v * gradient), color[1], 0];
-      const b = [...grayValues.map((v) => v * gradient), color[2], 0];
+      const grayScale = grayValues.map((v) => v * gradient);
+      const r = [...grayScale, color.red, 0];
+      const g = [...grayScale, color.green, 0];
+      const b = [...grayScale, color.blue, 0];
       const a = [0, 0, 0, 1, 0];
       const matrix = [...r, ...g, ...b, ...a]
         .map((n) => n.toFixed(3))
-        .join(' ');
+        .join(" ");
       document
-        .querySelector('#filter-sample feColorMatrix')
-        .setAttribute('values', matrix);
+        .querySelector("#filter-sample feColorMatrix")
+        .setAttribute("values", matrix);
     };
 
-    document.addEventListener('input', ({ target }) => {
+    document.addEventListener("input", ({ target }) => {
       switch (target.id) {
-        case 'gradient': {
-          document.querySelector('#gradient-value').textContent = target.value;
+        case "gradient": {
+          document.querySelector("#gradient-value").textContent = target.value;
           gradient = Number.parseInt(target.value) / 100;
           break;
         }
-        case 'red':
-        case 'green':
-        case 'blue': {
+        case "red":
+        case "green":
+        case "blue": {
           document.querySelector(`#${target.id}-value`).textContent =
             target.value;
-          color[map[target.id]] = Number.parseInt(target.value) / 255;
+          color[target.id] = Number.parseInt(target.value) / 255;
           break;
         }
       }
       updateMatrix();
     });
 
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((name) => {
+    ["dragenter", "dragover", "dragleave"].forEach((name) => {
       document.addEventListener(name, (event) => event.preventDefault());
     });
 
-    document.addEventListener('drop', (event) => {
+    document.addEventListener("drop", (event) => {
+      event.preventDefault();
       const objectURL = URL.createObjectURL(event.dataTransfer.files[0]);
-      document.querySelector('#target').src = objectURL;
+      document.querySelector("#target").src = objectURL;
     });
   </script>
 </doctype>
