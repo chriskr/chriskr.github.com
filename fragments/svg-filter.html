@@ -28,22 +28,43 @@
 
 <div class="row">
   <label>gradient</label>
-  <input type="range" id="gradient" min="0" max="150" value 100 />
+  <input
+    type="range"
+    id="gradient"
+    min="0"
+    max="150"
+    value="100"
+    data-percent="100"
+  />
   <span id="gradient-value">100</span>
 </div>
 <div class="row">
   <label>red</label>
-  <input type="range" id="red" min="0" max="255" value="0" />
+  <input type="range" id="red" min="0" max="255" value="0" data-percent="255" />
   <span id="red-value">0</span>
 </div>
 <div class="row">
   <label>green</label>
-  <input type="range" id="green" min="0" max="255" value="0" />
+  <input
+    type="range"
+    id="green"
+    min="0"
+    max="255"
+    value="0"
+    data-percent="255"
+  />
   <span id="green-value">0</span>
 </div>
 <div class="row">
   <label>blue</label>
-  <input type="range" id="blue" min="0" max="255" value="0" />
+  <input
+    type="range"
+    id="blue"
+    min="0"
+    max="255"
+    value="0"
+    data-percent="255"
+  />
   <span id="blue-value">0</span>
 </div>
 
@@ -61,19 +82,20 @@
   </filter>
 </svg>
 <script>
-  let gradient = 1;
   const grayValues = [0.2989, 0.587, 0.114];
-  const colors = {
+  const model = {
     red: 0,
     green: 0,
     blue: 0,
+    gradient: 1,
   };
 
   const updateMatrix = () => {
+    const { gradient, red, blue, green } = model;
     const grayScale = grayValues.map((v) => v * gradient);
-    const r = [...grayScale, colors.red, 0];
-    const g = [...grayScale, colors.green, 0];
-    const b = [...grayScale, colors.blue, 0];
+    const r = [...grayScale, red, 0];
+    const g = [...grayScale, green, 0];
+    const b = [...grayScale, blue, 0];
     const a = [0, 0, 0, 1, 0];
     const matrix = [...r, ...g, ...b, ...a].map((n) => n.toFixed(3)).join(" ");
     document
@@ -81,24 +103,23 @@
       .setAttribute("values", matrix);
   };
 
-  document.addEventListener("input", ({ target }) => {
-    switch (target.id) {
-      case "gradient": {
-        document.querySelector("#gradient-value").textContent = target.value;
-        gradient = Number.parseInt(target.value) / 100;
-        break;
+  document.addEventListener(
+    "input",
+    ({
+      target: {
+        id: key,
+        value,
+        dataset: { percent },
+      },
+    }) => {
+      if (!model.hasOwnProperty(key)) {
+        return;
       }
-      case "red":
-      case "green":
-      case "blue": {
-        document.querySelector(`#${target.id}-value`).textContent =
-          target.value;
-        colors[target.id] = Number.parseInt(target.value) / 255;
-        break;
-      }
+      document.querySelector(`#${key}-value`).textContent = value;
+      model[key] = Number.parseInt(value) / Number.parseInt(percent);
+      updateMatrix();
     }
-    updateMatrix();
-  });
+  );
 
   ["dragenter", "dragover", "dragleave"].forEach((name) => {
     document.addEventListener(name, (event) => event.preventDefault());
