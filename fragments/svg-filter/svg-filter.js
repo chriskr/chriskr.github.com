@@ -17,7 +17,7 @@ const setters = {
   saturationValue: (v) => (color.hsv.s = v / 100),
   valueValue: (v) => (color.hsv.v = v / 100),
 
-  hex: (v) => (color.hex = v),
+  hex: (v) => (color.hex.set(v)),
 };
 
 const getters = {
@@ -81,7 +81,10 @@ document.addEventListener('input', ({ target }) => {
   } else if (target.id === 'gradientValue') {
     document.querySelector('#gradient').value = target.value;
     gradient = Number.parseInt(target.value) / 100;
-  } else if (setters.hasOwnProperty(target.id)) {
+  } else if (target.id === 'hex') {
+    setters[target.id](target.value);
+    updateInputs(target);
+  }else if (setters.hasOwnProperty(target.id)) {
     setters[target.id](Number.parseInt(target.value));
     updateInputs(target);
   }
