@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<title>test</title>
+<style>
+  html,
+  body {
+    font-family: system-ui;
+    padding: 0;
+    margin: 0;
+  }
+  .pane {
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    left: 150px;
+    right: 150px;
+    border: 1px solid hsl(0, 0%, 30%);
+    overflow: hidden;
+  }
+  .bar {
+    display: flex;
+    flex-direction: row;
+    background-color: hsl(0, 0%, 80%);
+    border-bottom: 1px solid hsl(0, 0%, 30%);
+    margin: -1px;
+    margin-bottom: 0;
+  }
+  .bar::after {
+    content: "";
+    flex: 1;
+    order: 3;
+  }
+  .tabs {
+    height: 42px;
+    line-height: 42px;
+    margin-bottom: -1px;
+  }
+
+  .more {
+    position: relative;
+    margin-bottom: -1px;
+  }
+  .button {
+    border: 1px solid hsl(0, 0%, 30%);
+    height: 40px;
+    line-height: 40px;
+    min-width: 42px;
+    line-height: 42px;
+    order: 4;
+    margin-bottom: -1px;
+    background-color: hsl(55, 100%, 45%);
+    margin-left: -1px;
+  }
+
+  .tabs ul {
+    list-style: none;
+    height: 42px;
+    line-height: 42px;
+    margin: 0;
+    padding: 0;
+    padding-left: 1px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .tabs ul li,
+  .more {
+    padding: 0 20px;
+    border: 1px solid transparent;
+    height: 40px;
+    line-height: 40px;
+    order: 2;
+    background-image: linear-gradient(0, hsl(0, 0%, 050%), hsl(0, 0%, 050%)),
+      linear-gradient(0, hsl(0, 0%, 050%), hsl(0, 0%, 050%));
+    background-size: 1px 21px;
+    background-position: 0 10px, 100% 10px;
+    background-repeat: no-repeat;
+    background-origin: border-box;
+    margin-left: -1px;
+    cursor: pointer;
+  }
+
+  .tabs ul li:hover {
+    background-color: hsl(0, 0%, 90%);
+    border-color: hsl(0, 0%, 30%);
+    border-bottom-color: hsl(0, 0%, 90%);
+    background-size: 0 0;
+  }
+
+  .more:hover {
+    background-color: hsl(0, 0%, 90%);
+    border-color: hsl(0, 0%, 30%);
+    border-bottom-color: hsl(0, 0%, 30%);
+    background-size: 0 0;
+  }
+
+  .tabs ul li.selected {
+    background-color: hsl(0, 0%, 100%);
+    border-color: hsl(0, 0%, 30%);
+    border-bottom-color: hsl(0, 0%, 100%);
+    background-size: 0 0;
+  }
+
+  .drop-down {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    box-shadow: 2px 2px 9px hsl(0, 0%, 40%);
+    position: absolute;
+    right: 0;
+    top: 42px;
+    min-width: 100%;
+    border-radius: 2px;
+  }
+
+  .drop-down li {
+    padding: 0 20px;
+    height: 42px;
+    line-height: 42px;
+    cursor: pointer;
+  }
+
+  .drop-down li:hover {
+    background-color: hsl(0, 0%, 95%);
+  }
+</style>
+
+<div class="pane">
+  <div class="bar">
+    <div class="tabs">
+      <ul></ul>
+    </div>
+    <div class="more">more</div>
+    <div class="button"></div>
+  </div>
+</div>
+
+<script>
+  const tabNames = [
+    "red",
+    "green",
+    "orange",
+    "lime",
+    "yellow",
+    "pink",
+    "cyan",
+    "purpule",
+    "chocolate",
+    "black",
+    "aquamarine",
+    "blue",
+    "rosybrown",
+  ];
+
+  let selectedIndex = 0;
+
+  const setSelected = (index) => {
+    selectedIndex = index;
+    const tabs = Array.from(document.querySelectorAll(".tabs ul li"));
+    tabs.forEach((tab) => tab.classList.remove("selected"));
+    tabs[index].classList.add("selected");
+  };
+
+  const tabContainer = document.querySelector(".bar ul");
+  tabNames.forEach((name) => {
+    tabContainer.appendChild(document.createElement("li")).textContent = name;
+  });
+
+  setSelected(0);
+
+  const adjustTabs = () => {
+    const tabs = Array.from(document.querySelectorAll(".tabs ul li"));
+    tabs.forEach((tab) => tab.style.removeProperty("display"));
+    tabs[selectedIndex].style.order = "1";
+    tabs.offsetWidth;
+    const top = Math.min.apply(
+      Math,
+      tabs.map(({ offsetTop }) => offsetTop)
+    );
+    const tabsToHide = tabs.filter((tab) => tab.offsetTop !== top);
+    tabs[selectedIndex].style.removeProperty("order");
+    tabsToHide.forEach((tab) => (tab.style.display = "none"));
+  };
+
+  const bar = document.querySelector(".bar");
+  const resizeObserver = new ResizeObserver(adjustTabs);
+  resizeObserver.observe(bar);
+
+  document.onclick = (event) => {
+    const target = event.target;
+
+    const dropdown = document.querySelector(".drop-down");
+    if (dropdown) {
+      if (dropdown.contains(target)) {
+        const index = tabNames.indexOf(target.textContent);
+        if (index > -1) {
+          setSelected(index);
+          adjustTabs();
+        }
+      }
+      dropdown.remove();
+      return;
+    }
+
+    const more = document.querySelector(".more");
+    if (more.contains(target)) {
+      const hiddenTabs = Array.from(document.querySelectorAll(".tabs ul li"))
+        .filter(({ style: { display } }) => display === "none")
+        .map(({ textContent }) => textContent);
+      if (hiddenTabs.length === 0) return;
+      const ul = more.appendChild(document.createElement("ul"));
+      ul.classList.add("drop-down");
+      hiddenTabs.forEach((name) => {
+        ul.appendChild(document.createElement("li")).textContent = name;
+      });
+      return;
+    }
+
+    const tabs = document.querySelector(".tabs");
+    if (tabs.contains(target)) {
+      const index = tabNames.indexOf(target.textContent);
+      if (index > -1) {
+        setSelected(index);
+        adjustTabs();
+      }
+      return;
+    }
+  };
+</script>
