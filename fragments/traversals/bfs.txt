@@ -1,0 +1,69 @@
+
+
+
+ArchService --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Decision
+                            |                            |                            |                            --> Deliverable
+                            |                            |                            |-> Deliverable
+                            |                            |                            --> ProcessStep --> Decision
+                            |                            |                                            --> Deliverable
+                            |                            |-> Deliverable
+                            |                            --> ProcessStep --> Decision --> ProcessStep --> Decision
+                            |                                            |                            --> Deliverable
+                            |                                            |-> Deliverable
+                            |                                            --> ProcessStep --> Decision --> ProcessStep --> Decision
+                            |                                                            |                            --> Deliverable
+                            |                                                            |-> Deliverable
+                            |                                                            --> ProcessStep --> Decision
+                            |                                                                            --> Deliverable
+                            |-> Deliverable
+                            --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Decision
+                                            |                            |                            --> Deliverable
+                                            |                            |-> Deliverable
+                                            |                            --> ProcessStep --> Decision --> ProcessStep --> Decision
+                                            |                                            |                            --> Deliverable
+                                            |                                            |-> Deliverable
+                                            |                                            --> ProcessStep --> Decision
+                                            |                                                            --> Deliverable
+                                            |-> Deliverable
+                                            --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Decision
+                                                            |                            |                            --> Deliverable
+                                                            |                            |-> Deliverable
+                                                            |                            --> ProcessStep --> Decision
+                                                            |                                            --> Deliverable
+                                                            |-> Deliverable
+                                                            --> ProcessStep --> Decision --> ProcessStep --> Decision
+                                                                            |                            --> Deliverable
+                                                                            |-> Deliverable
+                                                                            --> ProcessStep --> Decision --> ProcessStep --> Decision
+                                                                                            |                            --> Deliverable
+                                                                                            |-> Deliverable
+                                                                                            --> ProcessStep --> Decision
+                                                                                                            --> Deliverable
+
+
+
+ArchService --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Decision
+                            |                            |                            |-> Deliverable
+                            |                            |                            --> ProcessStep --> Deliverable
+                            |                            |-> Deliverable
+                            |                            --> ProcessStep --> Decision --> ProcessStep --> Deliverable
+                            |                                            |-> Deliverable
+                            |                                            --> ProcessStep --> Decision
+                            |                                                            |-> Deliverable
+                            |                                                            --> ProcessStep --> Deliverable
+                            |-> Deliverable
+                            --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Deliverable
+                                            |                            |-> Deliverable
+                                            |                            --> ProcessStep --> Decision
+                                            |                                            |-> Deliverable
+                                            |                                            --> ProcessStep --> Deliverable
+                                            |-> Deliverable
+                                            --> ProcessStep --> Decision --> ProcessStep --> Decision
+                                                            |                            |-> Deliverable
+                                                            |                            --> ProcessStep --> Deliverable
+                                                            |-> Deliverable
+                                                            --> ProcessStep --> Decision --> ProcessStep --> Deliverable
+                                                                            |-> Deliverable
+                                                                            --> ProcessStep --> Decision
+                                                                                            |-> Deliverable
+                                                                                            --> ProcessStep --> Deliverable                                                                                                            
