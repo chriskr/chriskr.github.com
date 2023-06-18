@@ -33,7 +33,7 @@ const graph = new Map(
 
 const last = (list) => list[list.length - 1];
 
-const unfold = (paths, graph) => {
+const unfold = (paths, graph, target) => {
   const repetitions = new Set();
   const exausted = [];
   const nextPaths = [];
@@ -64,9 +64,9 @@ const unfold = (paths, graph) => {
   });
 
   if (nextPaths.length > 0) {
-    return unfold([...exausted, ...nextPaths], graph);
+    return unfold([...exausted, ...nextPaths], graph, target);
   } else {
-    return exausted;
+    return target ? exausted.filter((path) => last(path) === target) : exausted;
   }
 };
 
@@ -172,10 +172,19 @@ const checkmark = `<span style="color: #090">✓</span>`;
 
 const main = () => {
   printGraph(graph);
-  const exausted = unfold([[A]], graph);
+
+  const exausted = unfold([[A]], structuredClone(graph));
   log(`unfolded with BFS (total ${exausted.length}):`);
   log(...exausted.map((path) => path.join(' |-> ')).sort());
   log('\n');
+
+  const exausted3 = unfold([[A]], structuredClone(graph), D);
+  log(
+    `unfolded with BFS with target component type (total ${exausted3.length}):`
+  );
+  log(...exausted3.map((path) => path.join(' |-> ')).sort());
+  log('\n');
+
   printDGT(DGT);
   log('\n');
   const exausted2 = unfoldDGT([[A]], DGT);
