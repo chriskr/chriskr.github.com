@@ -16,7 +16,7 @@ const F = 'F';
 const rawGrap = [
   [A, [[B]]],
   [B, [[B, 5], [C], [D]]],
-  [C, [[B, 5]]],
+  [C, [[B, 4]]],
 ];
 
 const graph = new Map(
@@ -33,7 +33,7 @@ const graph = new Map(
 
 const last = (list) => list[list.length - 1];
 
-const unfold = (paths, graph, target) => {
+const unfold = (paths, graph) => {
   const repetitions = new Set();
   const exausted = [];
   const nextPaths = [];
@@ -64,14 +64,14 @@ const unfold = (paths, graph, target) => {
   });
 
   if (nextPaths.length > 0) {
-    return unfold([...exausted, ...nextPaths], graph, target);
+    return unfold([...exausted, ...nextPaths], graph);
   } else {
-    return target ? exausted.filter((path) => last(path) === target) : exausted;
+    return exausted;
   }
 };
 
 const printGraph = (graph) => {
-  log('traversals');
+  log('Free Form Traversal\n');
   Array.from(graph).forEach(([source, targets]) => {
     log(`from ${source}`);
     targets.forEach(({ target, config: { repetitions, isRepeating } }) => {
@@ -105,11 +105,11 @@ const DGT = [
 const indent = (n) => '  '.repeat(n);
 
 const printDGT = (dgt) => {
-  log('DGT');
+  log('DGT\n');
   dgt.forEach(({ traversals, repetitions }, index) => {
     log(`${indent(1)}step ${index + 1}`);
     if (repetitions) {
-      log(`${indent(2)}traversal, repeated ${repetitions} times`);
+      log(`${indent(2)}traversals, repeated ${repetitions} times`);
     } else {
       log(`${indent(2)}traversals`);
     }
@@ -143,6 +143,19 @@ const removeSubPaths = (paths) => {
   });
 };
 
+const substract = (pathsA, pathsB) => {
+  const keyMapA = new Map(pathsA.map((path) => [path, toKey(path)]));
+  const keyMapB = new Map(pathsB.map((path) => [path, toKey(path)]));
+  const keysA = new Set(Array.from(keyMapA.values()));
+  const contained = new Set();
+
+  pathsB.forEach((path) => {
+    const pathKey = keyMapB.get(path);
+    if (keysA.has(pathKey)) contained.add(pathKey);
+  });
+  return pathsA.filter((path) => !contained.has(keyMapA.get(path)));
+};
+
 const unfoldDGT = (paths, dgt, stepIndex = 0) => {
   console.log({ paths, stepIndex });
   let { traversals, repetitions = 1 } = dgt[stepIndex];
@@ -168,38 +181,40 @@ const unfoldDGT = (paths, dgt, stepIndex = 0) => {
   }
 };
 
-const checkmark = `<span style="color: #090">✓</span>`;
+const toGreenSpan = (str) =>
+  `<span style="background-color: hsl(120, 100%, 90%)">${str}</span>`;
 
 const main = () => {
-  printGraph(graph);
-
-  const exausted = unfold([[A]], structuredClone(graph));
-  log(`unfolded with BFS (total ${exausted.length}):`);
-  log(...exausted.map((path) => path.join(' |-> ')).sort());
-  log('\n');
-
-  const exausted3 = unfold([[A]], structuredClone(graph), D);
+  log(`${toGreenSpan('&nbsp;'.repeat(5))} contained in BFS and DGT`);
   log(
-    `unfolded with BFS with target component type (total ${exausted3.length}):`
+    'unfolded traversals, wich are contained in another traversal are removed, any sub-traversal will be returned anyway.\n'
   );
-  log(...exausted3.map((path) => path.join(' |-> ')).sort());
-  log('\n');
+  printGraph(graph);
+  const exaustedBFS = unfold([[A]], graph)
+    .map((path) => path.join(' -> '))
+    .sort();
+  const exaustedDGT = unfoldDGT([[A]], DGT)
+    .map((path) => path.join(' -> '))
+    .sort();
+  const bfsKeys = new Set(exaustedBFS);
+  const dgtKeys = new Set(exaustedDGT);
 
+  log(`unfolded with BFS:\n`);
+  log(
+    ...exaustedBFS.map((traversal) =>
+      dgtKeys.has(traversal) ? toGreenSpan(traversal) : traversal
+    )
+  );
+  //log(...exaustedBFS.map((path) => path.join(' -> ')).sort());
+  log('\n');
   printDGT(DGT);
   log('\n');
-  const exausted2 = unfoldDGT([[A]], DGT);
-  log(`unfold with DGT (total ${exausted2.length}):`);
-  ('✓');
-  const bfsKeys = exausted.map(toKey);
-  log(...exausted2.map((path) => path.join(' |-> ')).sort());
-  //log(
-  //...exausted2.map((path) => {
-  //const pathKey = toKey(path);
-  //return `${path.join(' -> ')}${
-  //  bfsKeys.some((key) => key.startsWith(pathKey)) ? ` ${checkmark}` : ''
-  //}`;
-  //})
-  //);
+  log(`unfold with DGT:\n`);
+  log(
+    ...exaustedDGT.map((traversal) =>
+      bfsKeys.has(traversal) ? toGreenSpan(traversal) : traversal
+    )
+  );
 };
 
 window.onload = main;

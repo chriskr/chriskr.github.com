@@ -41,35 +41,6 @@ ArchService --> ProcessStep --> Decision --> ProcessStep --> Decision --> Proces
                                                                                                             --> Deliverable
 
 
-ArchService --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Deliverable
-                            |                            |                            |-> Deliverable
-                            |                            |                            --> ProcessStep --> Deliverable
-                            |                            |-> Deliverable
-                            |                            --> ProcessStep --> Decision --> ProcessStep --> Deliverable
-                            |                                            |-> Deliverable
-                            |                                            --> ProcessStep --> Decision --> ProcessStep --> Deliverable
-                            |                                                            |-> Deliverable
-                            |                                                            --> ProcessStep --> Deliverable
-                            |-> Deliverable
-                            --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Deliverable
-                                            |                            |-> Deliverable
-                                            |                            --> ProcessStep --> Decision --> ProcessStep --> Deliverable
-                                            |                                            |-> Deliverable
-                                            |                                            --> ProcessStep --> Deliverable
-                                            |-> Deliverable
-                                            --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Deliverable
-                                                            |                            |-> Deliverable
-                                                            |                            --> ProcessStep --> Deliverable
-                                                            |-> Deliverable
-                                                            --> ProcessStep --> Decision --> ProcessStep --> Deliverable
-                                                                            |-> Deliverable
-                                                                            --> ProcessStep --> Decision --> ProcessStep --> Deliverable
-                                                                                            |-> Deliverable
-                                                                                            --> ProcessStep --> Deliverable
-
-
-
-
 
 ArchService --> ProcessStep --> Decision --> ProcessStep --> Decision --> ProcessStep --> Decision
                             |                            |                            |-> Deliverable
