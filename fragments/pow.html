@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<title>test</title>
+<script>
+  // n ** a in log(a) time
+  // e.g. n ** 9 as n * n ** 8 as n * (((n ** 2) ** 2 ** 2))
+  const pow = (n, a) => {
+    let r = 1;
+    let p = n;
+    while (a) {
+      if (a & 1) r *= p;
+      p *= p;
+      a >>>= 1;
+    }
+    return r;
+  };
+
+  const multiplyM2x2 = ([[a00, a10], [a01, a11]], [[b00, b10], [b01, b11]]) => [
+    [a00 * b00 + a10 * b01, a00 * b10 + a10 * b11],
+    [a10 * b00 + a11 * b01, a01 * b10 + a11 * b11],
+  ];
+
+  const fib = (n) => {
+    if (n === 0) return 0;
+    n -= 1;
+    let r = [
+      [1, 0],
+      [0, 1],
+    ];
+    let p = [
+      [1, 1],
+      [1, 0],
+    ];
+    while (n) {
+      if (n & 1) r = multiplyM2x2(r, p);
+      p = multiplyM2x2(p, p);
+      n >>>= 1;
+    }
+    return r[0][0];
+  };
+
+  for (let i = 0; i < 50; i++) {
+    console.log(fib(i));
+  }
+</script>
