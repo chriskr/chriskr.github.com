@@ -145,19 +145,18 @@ const main = () => {
     return newObj;
   };
 
-  window.testDictUpdate = () => {
-    const t = performance.now();
-    updateRandomObjectInDict(dict);
-    log("dict update random member:", performance.now() - t);
-  };
-
   const updateRandomObjectInMap = (map) => {
     const objId = objects[(Math.random() * objects.length) | 0].id;
-    const t = performance.now();
     const newMap = new Map(map);
     const obj = newMap.get(objId);
     newMap.set(objId, { ...obj, name: getName() });
     return newMap;
+  };
+
+  window.testDictUpdate = () => {
+    const t = performance.now();
+    updateRandomObjectInDict(dict);
+    log("dict update random member:", performance.now() - t);
   };
 
   window.testMapUpdate = () => {
