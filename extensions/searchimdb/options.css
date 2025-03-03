@@ -1,0 +1,29 @@
+body
+{
+  font: menu;
+}
+
+h1,
+h2
+{
+  font-weight: normal;
+}
+
+h1
+{
+  font-size: 2.5em;
+}
+
+h2
+{
+  font-size: 1.8em;
+}
+
+ul
+{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  float: left;
+  min-width: 10em;
+}

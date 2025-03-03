@@ -1,0 +1,15 @@
+{
+  "name": "Search IMDB",
+  "description": "",
+  "version": "0.1",
+  "permissions": ["contextMenus", "tabs"],
+  "background": {
+    "persistent": true,
+    "scripts": ["searchimdb.js"]
+  },
+  "icons": {
+    "16": "favicon-16.png",
+    "48": "favicon-48.png"
+  },
+  "manifest_version": 2
+}
